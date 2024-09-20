@@ -1,0 +1,10 @@
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+    "name": "Mahmud Hasan",
+    "email": "mahmudhasan123@gmail.com",
+    "phone": "01523422243",
+    "role": "admin",
+    "password": "admin123"
+}
