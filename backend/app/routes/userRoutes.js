@@ -7,13 +7,11 @@ import {
 } from "../controllers/userController.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/user/login", loginUser);
-router.get("/users", getUsers);
-router.get("/users/:id", getUserDetail);
+userRouter.post("/user/login", loginUser);
+userRouter.get("/users", getUsers);
+userRouter.get("/users/:id", getUserDetail);
+userRouter.post("/user", createUser);
 
-// Protected routes
-router.post("/user", authenticateToken, createUser);
-
-export default router;
+export default userRouter;

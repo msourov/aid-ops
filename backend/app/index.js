@@ -1,12 +1,13 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import morgan from "morgan";
 
 import userRouter from "./routes/userRoutes.js";
+import crisisRouter from "./routes/crisisRoutes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { requestLogger } from "./middlewares/requestLogger.js";
 import { unknownEndpoint } from "./middlewares/unknownEndpoint.js";
+import donationRouter from "./routes/donateRoute.js";
 dotenv.config();
 
 const app = express();
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(requestLogger);
 
 app.use("/api", userRouter);
+app.use("/api", crisisRouter);
+app.use("/api", donationRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

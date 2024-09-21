@@ -4,7 +4,6 @@ export const errorHandler = (error, req, res, next) => {
 
   console.error(`[Error]: ${message}`);
 
-  // Customize responses based on error types if needed
   if (error.name === "ValidationError") {
     return res.status(400).json({ error: error.message });
   }

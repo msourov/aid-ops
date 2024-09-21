@@ -1,4 +1,7 @@
-import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import { verifyToken } from "../utils/authUtils.js";
+
+dotenv.config();
 
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -9,10 +12,12 @@ export const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded; // Attach the user information to the request
+    const decoded = verifyToken(token);
+    console.log("Decoded Token:", decoded);
+    req.user = decoded;
     next();
   } catch (err) {
+    console.error("Invalid token:", err.message);
     res.status(401).json({ message: "Invalid token" });
   }
 };

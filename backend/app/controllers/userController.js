@@ -1,8 +1,8 @@
 import {
   createUserInDB,
+  fetchUserById,
+  fetchUsers,
   findUserByEmail,
-  getAllUsers,
-  getUserById,
 } from "../models/userModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { validateUser } from "../validators/userValidator.js";
@@ -33,14 +33,13 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     error.status = 401;
     return next(error);
   }
-  const token = generateToken(user);
+  const token = generateToken(user[0]);
   res.status(200).json({ token });
 });
 
 export const getUsers = asyncHandler(async (req, res) => {
   try {
-    const [users] = await getAllUsers();
-    console.log(users);
+    const [users] = await fetchUsers();
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error fetching users", error });
@@ -49,7 +48,7 @@ export const getUsers = asyncHandler(async (req, res) => {
 
 export const getUserDetail = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
-  const [user] = await getUserById(id);
+  const [user] = await fetchUserById(id);
   if (!user[0]) {
     const error = new Error("User not found");
     error.status = 404;
@@ -59,14 +58,15 @@ export const getUserDetail = asyncHandler(async (req, res, next) => {
 });
 
 export const createUser = asyncHandler(async (req, res, next) => {
-  const { name, email, phone, role, password } = req.body;
-  const { error } = validateUser(req.body);
+  const { name, age, email, phone, password } = req.body;
+  const role = req.body?.role || "volunteer";
+
+  const { error } = validateUser({ name, age, email, phone, role, password });
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
 
   const existingUser = await findUserByEmail(email);
-  console.log(existingUser, "line 38");
   if (existingUser[0].length) {
     const err = new Error("User already exists");
     err.status = 400;
@@ -75,6 +75,7 @@ export const createUser = asyncHandler(async (req, res, next) => {
   const hashedPass = await bcrypt.hash(password, 10);
   const newUser = await createUserInDB({
     name,
+    age,
     email,
     phone,
     role,
