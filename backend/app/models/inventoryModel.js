@@ -1,3 +1,4 @@
+import { broadcastData } from "..";
 import { pool } from "../config/dbconfig";
 import { asyncHandler } from "../utils/asyncHandler";
 
@@ -23,6 +24,7 @@ export const addToInventoryInDb = async (data) => {
     );
     console.log("add inventory result", result);
     await connection.commit();
+    broadcastData({ action: "NEW_INVENTORY_ITEM", item: data });
     return result;
   } catch (error) {
     console.error(error);

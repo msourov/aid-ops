@@ -6,7 +6,9 @@ dist/
 # Build directories
 /backend/build
 /frontend/build
-
+/backend/requests
 # Logs
 logs
 *.log
+
+notes.md

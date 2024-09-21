@@ -1,4 +1,5 @@
 import { pool } from "../config/dbconfig.js";
+import { broadcastData } from "../index.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const fetchTotalDonation = asyncHandler(async (req, res) => {
@@ -31,6 +32,11 @@ export const createDonationInDB = asyncHandler(async (data) => {
       [donor_name, donor_email, amount]
     );
     await connection.commit();
+
+    broadcastData({
+      action: "NEW_DONATION",
+      donation: { id: result.insertId, donor_name, donor_email, amount },
+    });
     return { id: result.insertId, donor_name, donor_email, amount };
   } catch (error) {
     await connection.rollback();
