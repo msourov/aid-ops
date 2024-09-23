@@ -25,15 +25,31 @@ This project is designed to facilitate disaster management through efficient vol
 
 ### Setup
 1. Clone the repository:
-2. ```
+```
    git clone https://github.com/msourov/disaster-management.git
    cd disaster-management
-   ```
-3. Run backend
-   ```
+```
+2. Create a .env file in the backend root folder and set up your database connection string:
+```
+   HOST='localhost'                  # The host for your database, likely 'localhost' for local dev
+   USER='your_database_user'          # Replace with your database username
+   PASSWORD='your_database_password'  # Replace with your database password
+   DATABASE='your_database_name'      # Replace with the name of your database
+   PORT='your_port_number'            # Replace with the port for your server (e.g., 8080)
+   NODE_ENV='development'             # The environment (can be 'development' or 'production')
+   JWT_SECRET='your_jwt_secret_key'   # Replace with your secret key for JWT authentication
+
+```
+3. Create a .env file in the frontend root folder with the following info:
+```
+   BASE_API="http://localhost:8080/api/" # if you set port as 8080
+```
+5. Run backend
+```
    cd backend
    npm install
    npm run dev
+```
 4. Run frontend
 ```
   cd frontend
