@@ -13,7 +13,7 @@ const crisisRouter = express.Router();
 
 crisisRouter.get("/", getCrises);
 crisisRouter.get("/:id", getCrisisDetail);
-crisisRouter.post("", createCrisis);
+crisisRouter.post("/create", createCrisis);
 crisisRouter.put("/:id/approve", authenticateToken, isAdmin, approveCrisis);
 crisisRouter.put("/:id/reject", authenticateToken, isAdmin, rejectCrisis);
 

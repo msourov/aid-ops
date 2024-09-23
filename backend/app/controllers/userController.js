@@ -1,11 +1,14 @@
 import {
   createUserInDB,
+  fetchAllVolunteers,
+  fetchAvailableVolunteer,
   fetchUserById,
   fetchUsers,
+  fetchVolunteerInfo,
   findUserByEmail,
 } from "../models/userModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { validateUser } from "../validators/userValidator.js";
+import { userSchema } from "../validators/userValidator.js";
 import { generateToken } from "../utils/authUtils.js";
 import bcrypt from "bcrypt";
 
@@ -34,7 +37,8 @@ export const loginUser = asyncHandler(async (req, res, next) => {
     return next(error);
   }
   const token = generateToken(user[0]);
-  res.status(200).json({ token });
+  const { password: _, ...userData } = user[0];
+  res.status(200).json({ token, userData });
 });
 
 export const getUsers = asyncHandler(async (req, res) => {
@@ -43,6 +47,39 @@ export const getUsers = asyncHandler(async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error fetching users", error });
+  }
+});
+
+export const getVolunteerInfo = asyncHandler(async (req, res) => {
+  try {
+    const volunteers = await fetchVolunteerInfo();
+    res.status(200).json(volunteers);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error fetching volunteer information", error });
+  }
+});
+
+export const getAllVolunteers = asyncHandler(async (req, res) => {
+  try {
+    const volunteers = await fetchAllVolunteers();
+    res.status(200).json(volunteers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching volunteers", error });
+  }
+});
+
+export const getAvailableVolunteers = asyncHandler(async (req, res) => {
+  try {
+    const volunteers = await fetchAvailableVolunteer();
+    res.status(200).json(volunteers);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching available volunteers", error });
   }
 });
 
@@ -61,7 +98,7 @@ export const createUser = asyncHandler(async (req, res, next) => {
   const { name, age, email, phone, password } = req.body;
   const role = req.body?.role || "volunteer";
 
-  const { error } = validateUser({ name, age, email, phone, role, password });
+  const { error } = userSchema({ name, age, email, phone, role, password });
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
@@ -81,6 +118,8 @@ export const createUser = asyncHandler(async (req, res, next) => {
     role,
     password: hashedPass,
   });
-
-  res.status(201).json({ message: "User created successfully", user: newUser });
+  const { password: _, ...userData } = newUser;
+  res
+    .status(201)
+    .json({ message: "User created successfully", user: userData });
 });

@@ -1,7 +1,7 @@
 import { pool } from "../config/dbconfig.js";
 
 export const fetchCrises = async () => {
-  return pool.query("SELECT * FROM crises");
+  return pool.query("SELECT * FROM crises ORDER BY created_at DESC");
 };
 
 export const fetchCrisisById = async (id) => {

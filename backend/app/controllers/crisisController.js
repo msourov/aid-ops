@@ -5,7 +5,7 @@ import {
   fetchCrisisById,
   rejectCrisisInDb,
 } from "../models/crisisModel.js";
-import { validateCrisis } from "../validators/crisisValidator.js";
+import { crisisSchema } from "../validators/crisisValidator.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getCrises = asyncHandler(async (req, res) => {
@@ -24,7 +24,7 @@ export const getCrisisDetail = asyncHandler(async (req, res) => {
 export const createCrisis = asyncHandler(async (req, res) => {
   const { title, description, location, severity } = req.body;
   const status = req.body.status || "pending";
-  const { error } = await validateCrisis({
+  const { error } = await crisisSchema({
     title,
     description,
     location,

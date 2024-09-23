@@ -1,18 +1,30 @@
 import {
   createDonationInDB,
+  fetchAllDonations,
   fetchTotalDonation,
 } from "../models/donationModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
-import { validateDonor } from "../validators/donationValidator.js";
+import { donorSchema } from "../validators/donationValidator.js";
+
+export const getAllDonations = asyncHandler(async (req, res) => {
+  try {
+    const donations = await fetchAllDonations();
+    res.status(200).json(donations);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching donation data", error });
+  }
+});
 
 export const getTotalDonation = asyncHandler(async (req, res) => {
   const donations = await fetchTotalDonation();
   res.status(200).json(donations);
 });
 
+export const getDailyDonationExpense = asyncHandler(async (req, res) => {});
+
 export const createDonation = asyncHandler(async (req, res) => {
   const { donor_name, donor_email, amount } = req.body;
-  const { error } = await validateDonor({ donor_name, donor_email, amount });
+  const { error } = await donorSchema({ donor_name, donor_email, amount });
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }

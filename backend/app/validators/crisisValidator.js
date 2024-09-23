@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-export const validateCrisis = (data) => {
+export const crisisSchema = (data) => {
   const schema = Joi.object({
     title: Joi.string().min(3).max(50).required(),
     description: Joi.string().min(3).max(200).optional(),
