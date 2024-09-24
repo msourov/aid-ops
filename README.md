@@ -2,7 +2,11 @@
 
 ## Overview
 This project is designed to facilitate disaster management through efficient volunteer registration, crisis management, and inventory tracking. The application allows users to register as volunteers, manage crises, and keep track of inventory and expenses related to disaster relief efforts.
-
+**Admin Credential: **
+```
+mahmud@gmail.com
+admin1666
+```
 ## Features
 - **Volunteer Registration**: Users can register as volunteers to assist in disaster relief efforts.
 - **Crisis Management**: Admins can approve and manage crises effectively.
