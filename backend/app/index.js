@@ -25,7 +25,7 @@ const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
 const corsOptions = {
-  origin: ["http://localhost:5173", "http://your-other-domain.com"], // Allow multiple origins
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed methods
   allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
   credentials: true,

@@ -10,5 +10,6 @@ dist/
 # Logs
 logs
 *.log
+/project.zip
 
 notes.md
