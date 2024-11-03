@@ -9,6 +9,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { inventorySchema } from "../validators/inventoryValidator.js";
 
 export const getInventoryData = asyncHandler(async (req, res) => {
+  console.log("inventory req ", req);
   try {
     const [result] = await fetchInventoryData();
     res.status(200).json(result);

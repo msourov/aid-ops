@@ -12,9 +12,9 @@ import { isAdmin } from "../middlewares/isAdmin.js";
 const crisisRouter = express.Router();
 
 crisisRouter.get("/", getCrises);
-crisisRouter.get("/:id", getCrisisDetail);
 crisisRouter.post("/create", createCrisis);
 crisisRouter.put("/:id/approve", authenticateToken, isAdmin, approveCrisis);
 crisisRouter.put("/:id/reject", authenticateToken, isAdmin, rejectCrisis);
+crisisRouter.get("/:id", getCrisisDetail);
 
 export default crisisRouter;

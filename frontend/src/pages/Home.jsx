@@ -33,7 +33,7 @@ const Home = () => {
   const getData = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/users", {
+      const response = await fetch("http://localhost:8080/api/v1/users", {
         method: "GET",
       });
       const data = await response.json();
@@ -50,7 +50,7 @@ const Home = () => {
 
   const volunteers = users && users.filter((item) => item.role === "volunteer");
   return (
-    <Container fluid className="max-h-[90vh] overflow-y-auto">
+    <Container fluid className="overflow-y-auto text-[#07553B]">
       {dailyData && financialsData && (
         <FundSection
           dailyData={dailyData}
@@ -59,12 +59,13 @@ const Home = () => {
           error={financialDataError || dailyDataError}
         />
       )}
-      <Divider my="0.5rem" />
+      <Divider color="gray" />
       <CrisisSection
         crises={filteredCrisisData}
         loading={crisesDataLoading}
         error={crisesError}
       />
+      <Divider color="gray" />
       <VolunteerSection volunteers={volunteers} loading={loading} />
     </Container>
   );

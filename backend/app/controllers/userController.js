@@ -5,6 +5,7 @@ import {
   fetchUserById,
   fetchUsers,
   fetchVolunteerInfo,
+  fetchVolunteerOptions,
   findUserByEmail,
 } from "../models/userModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -64,6 +65,7 @@ export const getVolunteerInfo = asyncHandler(async (req, res) => {
 export const getAllVolunteers = asyncHandler(async (req, res) => {
   try {
     const volunteers = await fetchAllVolunteers();
+    console.log(volunteers);
     res.status(200).json(volunteers);
   } catch (error) {
     console.error(error);
@@ -83,11 +85,23 @@ export const getAvailableVolunteers = asyncHandler(async (req, res) => {
   }
 });
 
+export const getVolunteerOptions = asyncHandler(async (req, res) => {
+  try {
+    const volunteerOptions = await fetchVolunteerOptions();
+    res.status(200).json(volunteerOptions);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "Error fetching volunteer options", error });
+  }
+});
+
 export const getUserDetail = asyncHandler(async (req, res, next) => {
   const { id } = req.params;
   const [user] = await fetchUserById(id);
   if (!user[0]) {
-    const error = new Error("User not found");
+    const error = new Error("User does not exist");
     error.status = 404;
     return next(error);
   }

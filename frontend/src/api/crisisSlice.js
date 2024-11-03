@@ -9,21 +9,21 @@ export const crisisApi = createApi({
   endpoints: (builder) => ({
     getCrises: builder.query({
       query: () => ({
-        url: "crisis",
+        url: "crises",
         method: "GET",
       }),
       providesTags: [{ type: "Crisis", id: "LIST" }],
     }),
     getCrisisDetail: builder.query({
       query: (id) => ({
-        url: `crisis/${id}`,
+        url: `crises/${id}`,
         method: "GET",
       }),
       providesTags: (result, _error, { id }) => [{ type: "Crisis", id }],
     }),
     createCrisis: builder.mutation({
       query: (data) => ({
-        url: "crisis/create",
+        url: "crises/create",
         method: "POST",
         body: data,
       }),
@@ -31,14 +31,14 @@ export const crisisApi = createApi({
     }),
     approveCrisis: builder.mutation({
       query: (id) => ({
-        url: `crisis/${id}/approve`,
+        url: `crises/${id}/approve`,
         method: "PUT",
       }),
       invalidatesTags: (_result, _error, id) => [{ type: "Crisis", id }],
     }),
     rejectCrisis: builder.mutation({
       query: (id) => ({
-        url: `crisis/${id}/reject`,
+        url: `crises/${id}/reject`,
         method: "PUT",
       }),
       invalidatesTags: (_result, _error, id) => [{ type: "Crisis", id }],

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Table, Text, Loader, Box } from "@mantine/core";
+import { Table, Text, Loader, Box, Title, Divider } from "@mantine/core";
 import PropTypes from "prop-types";
 
 const VolunteerSection = ({ volunteers, loading }) => {
@@ -12,8 +12,14 @@ const VolunteerSection = ({ volunteers, loading }) => {
   }
 
   return (
-    <Box className="px-[5vw]">
-      <Table>
+    <Box className="px-[5vw] py-10 ">
+      <Title order={3} className="font-bold text-blue-500 text-center">
+        Volunteers
+      </Title>
+      <div className="flex justify-center mb-4">
+        <Divider w="500px" color="#07553B" />
+      </div>
+      <Table className="mt-8">
         <TableHeading />
         <TableBody volunteers={volunteers} />
       </Table>

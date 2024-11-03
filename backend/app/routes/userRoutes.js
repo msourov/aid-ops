@@ -1,29 +1,27 @@
 import express from "express";
 import {
-  createUser,
   getAllVolunteers,
   getAvailableVolunteers,
   getUserDetail,
   getUsers,
   getVolunteerInfo,
-  loginUser,
+  getVolunteerOptions,
 } from "../controllers/userController.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 import { isAdmin } from "../middlewares/isAdmin.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/user/login", loginUser);
-userRouter.get("/users", getUsers);
-userRouter.get("/users/:id", getUserDetail);
-userRouter.post("/user/register", createUser);
-userRouter.get("/user/all-volunteers", getAllVolunteers);
+userRouter.get("/", getUsers);
+userRouter.get("/all-volunteers", getAllVolunteers);
 userRouter.get(
-  "/user/available-volunteers",
+  "/available-volunteers",
   authenticateToken,
   isAdmin,
   getAvailableVolunteers
 );
-userRouter.get("/user/volunteers", getVolunteerInfo);
+userRouter.get("/volunteers", getVolunteerInfo);
+userRouter.get("/volunteer-options", getVolunteerOptions);
+userRouter.get("/:id", getUserDetail);
 
 export default userRouter;

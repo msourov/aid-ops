@@ -1,12 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  TextInput,
-  PasswordInput,
-  Paper,
-  Container,
-  Button,
-  Loader,
-} from "@mantine/core";
+import { TextInput, PasswordInput, Paper, Button, Loader } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useForm } from "react-hook-form";
 import { MdOutlinePhone } from "react-icons/md";
@@ -69,54 +62,59 @@ const Login = () => {
 
   return (
     <div className="bg-[url('./assets/loginpage.png')] w-full h-full bg-cover fixed top-0 left-0 z-[-10] flex items-center justify-center">
-      <Container className="text-sm drop-shadow-lg w-full max-w-lg -mt-32">
-        <Paper withBorder shadow="md" radius="md" p={30}>
-          <form onSubmit={handleSubmit(onSubmit)} className="p-20">
-            <TextInput
-              label="Email"
-              placeholder="example@mail.com"
-              autoComplete="off"
-              leftSection={<MdOutlinePhone />}
-              required
-              radius="md"
-              {...register("email")}
-              error={errors.email?.message}
-            />
+      {/* <Container className="text-sm drop-shadow-lg -mt-32"> */}
+      <Paper
+        withBorder
+        shadow="md"
+        radius="md"
+        className="text-sm drop-shadow-lg -mt-32 w-[500px]"
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="p-10">
+          <TextInput
+            label="Email"
+            placeholder="example@mail.com"
+            autoComplete="off"
+            leftSection={<MdOutlinePhone />}
+            required
+            radius="md"
+            {...register("email")}
+            error={errors.email?.message}
+          />
 
-            <PasswordInput
-              label="Password"
-              placeholder="********"
-              required
-              leftSection={<CiLock />}
+          <PasswordInput
+            label="Password"
+            placeholder="********"
+            required
+            leftSection={<CiLock />}
+            mt="md"
+            radius="md"
+            {...register("password")}
+            error={errors.password?.message}
+          />
+          <div className="flex flex-col items-center">
+            <Button
+              mt="lg"
+              type="submit"
+              color="black"
+              className="rounded-lg bg-black"
+              disabled={loading}
+            >
+              {loading ? <Loader color="white" size={20} /> : "Login"}
+            </Button>
+
+            <Button
               mt="md"
-              radius="md"
-              {...register("password")}
-              error={errors.password?.message}
-            />
-            <div className="flex flex-col items-center">
-              <Button
-                mt="lg"
-                type="submit"
-                color="black"
-                className="rounded-lg bg-black"
-                disabled={loading}
-              >
-                {loading ? <Loader color="white" size={20} /> : "Login"}
-              </Button>
-
-              <Button
-                mt="md"
-                variant="outline"
-                color="black"
-                onClick={() => navigate("/register")}
-                className="rounded-lg"
-              >
-                Register as a Volunteer
-              </Button>
-            </div>
-          </form>
-        </Paper>
-      </Container>
+              variant="outline"
+              color="black"
+              onClick={() => navigate("/register")}
+              className="rounded-lg"
+            >
+              Register as a Volunteer
+            </Button>
+          </div>
+        </form>
+      </Paper>
+      {/* </Container> */}
     </div>
   );
 };

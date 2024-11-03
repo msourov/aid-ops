@@ -75,8 +75,14 @@ const Register = () => {
 
   return (
     <Container className="flex items-center justify-center h-screen">
-      <Paper withBorder shadow="md" radius="md" p={20}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Paper
+        withBorder
+        shadow="md"
+        radius="md"
+        p={20}
+        className="text-sm drop-shadow-lg -mt-32 w-[500px]"
+      >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 p-10">
           <TextInput
             label="Name"
             placeholder="Enter your name"

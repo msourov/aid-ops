@@ -27,6 +27,7 @@ const DonationForm = () => {
 
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
     setValue,
@@ -47,6 +48,7 @@ const DonationForm = () => {
         color: "green",
       });
       setLoading(false);
+      reset({ donor_name: "", donor_email: "", amount: 0 });
     } catch (error) {
       console.error("Donation error:", error);
       notifications.show({

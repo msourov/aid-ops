@@ -12,6 +12,6 @@ export const errorHandler = (error, req, res, next) => {
     status: statusCode,
     message,
     // Optionally include stack trace in development mode
-    // stack: process.env.NODE_ENV === "production" ? null : error.stack,
+    // stack: process.env.DB_NODE_ENV === "production" ? null : error.stack,
   });
 };

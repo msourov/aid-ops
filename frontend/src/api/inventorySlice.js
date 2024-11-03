@@ -15,10 +15,7 @@ export const inventoryApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({
-                type: "Inventory",
-                id,
-              })),
+              ...result.map(({ id }) => ({ type: "Inventory", id })),
               { type: "Inventory", id: "LIST" },
             ]
           : [{ type: "Inventory", id: "LIST" }],

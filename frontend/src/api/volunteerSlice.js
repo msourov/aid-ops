@@ -9,7 +9,7 @@ export const volunteerApi = createApi({
 
   endpoints: (builder) => ({
     getAvailableVolunteers: builder.query({
-      query: () => "user/available-volunteers",
+      query: () => "users/available-volunteers",
       providesTags: (result) =>
         result
           ? [
@@ -22,7 +22,7 @@ export const volunteerApi = createApi({
           : [{ type: "Volunteer", id: "LIST" }],
     }),
     getAllVolunteers: builder.query({
-      query: () => "user/all-volunteers",
+      query: () => "users/all-volunteers",
       providesTags: (result) =>
         result
           ? [
@@ -34,8 +34,15 @@ export const volunteerApi = createApi({
             ]
           : [{ type: "Volunteer", id: "LIST" }],
     }),
+    getVolunteerOptions: builder.query({
+      query: () => "users/volunteer-options",
+      providesTags: [{ type: "Volunteer", id: "OPTIONS" }],
+    }),
   }),
 });
 
-export const { useGetAvailableVolunteersQuery, useGetAllVolunteersQuery } =
-  volunteerApi;
+export const {
+  useGetAvailableVolunteersQuery,
+  useGetAllVolunteersQuery,
+  useGetVolunteerOptionsQuery,
+} = volunteerApi;

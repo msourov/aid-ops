@@ -24,6 +24,7 @@ export const fetchAllVolunteers = async () => {
     LEFT JOIN tasks t ON v.user_id = t.volunteer_id
     GROUP BY v.user_id
   `);
+  console.log("result", result);
   return result;
 };
 
@@ -34,8 +35,18 @@ export const fetchAvailableVolunteer = async () => {
     FROM volunteers v
     JOIN users u ON v.user_id = u.id
     LEFT JOIN tasks t ON v.user_id = t.volunteer_id
+    WHERE v.status = 'idle'
     GROUP BY v.user_id
-     WHERE v.status = 'idle'`
+    `
+  );
+  return result;
+};
+
+export const fetchVolunteerOptions = async () => {
+  const [result] = await pool.query(
+    `SELECT v.user_id as id, u.name FROM volunteers v 
+    LEFT JOIN users u ON u.id = v.user_id 
+    WHERE v.status = 'idle'`
   );
   return result;
 };

@@ -5,11 +5,11 @@ import DonationTable from "../components/DonationTable";
 const Donation = () => {
   const { data: donations, isLoading } = useGetAllDonationsQuery();
   return (
-    <div className="flex flex-col items-center space-y-8 p-4">
-      <div className="donation-form w-full max-w-xl">
+    <div className="flex flex-col md:flex-row items-center justify-center p-4">
+      <div className="donation-form md:w-[25%] w-[70%]">
         <DonationForm />
       </div>
-      <div className="donation-list w-full ">
+      <div className="donation-list md:w-[70%] w-[80%]">
         <DonationTable donations={donations} loading={isLoading} />
       </div>
     </div>

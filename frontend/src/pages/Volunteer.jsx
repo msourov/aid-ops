@@ -3,25 +3,28 @@ import {
   useGetAllVolunteersQuery,
   useGetAvailableVolunteersQuery,
 } from "../api/volunteerSlice";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const Volunteer = () => {
   const [value, setValue] = useState("All"); // Default value set to 'All'
-  const [volunteers, setVolunteers] = useState([]);
-  const { data: availableVolunteers = [] } = useGetAvailableVolunteersQuery();
+
   const {
     data: allVolunteers = [],
-    isLoading,
-    error,
+    isLoading: isLoadingAll,
+    error: errorAll,
   } = useGetAllVolunteersQuery();
 
-  useEffect(() => {
-    if (value === "All") {
-      setVolunteers(allVolunteers);
-    } else {
-      setVolunteers(availableVolunteers);
-    }
-  }, [value, allVolunteers, availableVolunteers]);
+  const {
+    data: availableVolunteers = [],
+    isLoading: isLoadingAvailable,
+    error: errorAvailable,
+  } = useGetAvailableVolunteersQuery(undefined, {
+    skip: value !== "Available",
+  });
+
+  const isLoading = value === "All" ? isLoadingAll : isLoadingAvailable;
+  const error = value === "All" ? errorAll : errorAvailable;
+  const volunteers = value === "All" ? allVolunteers : availableVolunteers;
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching volunteers: {error.message}</div>;

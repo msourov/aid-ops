@@ -10,7 +10,7 @@ export const donationApi = createApi({
   endpoints: (builder) => ({
     getAllDonations: builder.query({
       query: () => ({
-        url: "donation/all",
+        url: "donations/all",
         method: "GET",
       }),
       providesTags: (result) =>
@@ -26,7 +26,7 @@ export const donationApi = createApi({
     }),
     getTotalDonation: builder.query({
       query: () => ({
-        url: "donation/total",
+        url: "donations/total",
         method: "GET",
       }),
       providesTags: [{ type: "Donation", id: "LIST" }],
@@ -40,7 +40,7 @@ export const donationApi = createApi({
     }),
     createDonation: builder.mutation({
       query: (data) => ({
-        url: "donation/create",
+        url: "donations/create",
         method: "POST",
         body: data,
       }),

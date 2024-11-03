@@ -15,19 +15,20 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import { requestLogger } from "./middlewares/requestLogger.js";
 import { unknownEndpoint } from "./middlewares/unknownEndpoint.js";
 import financialsRouter from "./routes/financialsRoute.js";
+import authRouter from "./routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.DB_PORT || 5000;
 
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
 const corsOptions = {
   origin: "*",
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // Allowed methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allowed headers
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true,
   optionsSuccessStatus: 204,
 };
@@ -39,12 +40,13 @@ app.use(compression());
 
 app.use(requestLogger);
 
-app.use("/api", userRouter);
-app.use("/api/crisis", crisisRouter);
-app.use("/api/donation", donationRouter);
-app.use("/api/inventory", inventoryRouter);
-app.use("/api/task", taskRouter);
-app.use("/api/financials", financialsRouter);
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/crises", crisisRouter);
+app.use("/api/v1/donations", donationRouter);
+app.use("/api/v1/inventory", inventoryRouter);
+app.use("/api/v1/tasks", taskRouter);
+app.use("/api/v1/financials", financialsRouter);
 
 app.use(unknownEndpoint);
 app.use(errorHandler);
@@ -65,7 +67,7 @@ wss.on("connection", (ws) => {
 
     // Optionally, you can process the message here
     // and broadcast a response if needed
-    const dataToBroadcast = { message }; // Customize this as needed
+    const dataToBroadcast = { message };
     broadcastData(dataToBroadcast);
   });
 

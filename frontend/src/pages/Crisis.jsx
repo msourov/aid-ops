@@ -44,13 +44,14 @@ const Crisis = () => {
                 <span
                   className={
                     crisis.severity === "low"
-                      ? "bg-yellow-200"
+                      ? "bg-yellow-200 text-yellow-500"
                       : crisis.severity === "medium"
-                      ? "bg-orange-500"
+                      ? "bg-orange-300 text-orange-800"
                       : crisis.severity === "high"
                       ? "bg-red-700"
                       : "bg-gray-400"
                   }
+                  style={{ padding: "0.25rem 0.5rem", borderRadius: "50px" }}
                 >
                   {crisis.severity || "N/A"}
                 </span>

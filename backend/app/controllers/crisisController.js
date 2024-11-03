@@ -3,6 +3,7 @@ import {
   createCrisisInDB,
   fetchCrises,
   fetchCrisisById,
+  fetchCrisisOptions,
   rejectCrisisInDb,
 } from "../models/crisisModel.js";
 import { crisisSchema } from "../validators/crisisValidator.js";
@@ -10,7 +11,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 export const getCrises = asyncHandler(async (req, res) => {
   const [crises] = await fetchCrises();
-  console.log("crises", crises);
+  res.status(200).json(crises);
+});
+
+export const getCrisesOptions = asyncHandler(async (req, res) => {
+  const [crises] = await fetchCrisisOptions();
   res.status(200).json(crises);
 });
 
@@ -34,7 +39,7 @@ export const createCrisis = asyncHandler(async (req, res) => {
   if (error) {
     return res.status(400).json({ message: error.details[0].message });
   }
-  const userId = req.user?.id; // Adjust this based on how you manage authentication
+  const userId = req.user?.id;
 
   const newCrisis = await createCrisisInDB({
     title,

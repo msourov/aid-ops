@@ -1,4 +1,13 @@
-import { Box, Text, Card, Title, Loader, Pill, Button } from "@mantine/core";
+import {
+  Box,
+  Text,
+  Card,
+  Title,
+  Loader,
+  Pill,
+  Button,
+  Divider,
+} from "@mantine/core";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
@@ -16,18 +25,21 @@ const CrisisSection = ({ crises, loading, error }) => {
   }
 
   return (
-    <>
+    <div className="py-8 bg-[#e0dbdc] text-[#3f5041]">
       <Box
         style={{
           maxHeight: "400px",
           overflowY: "none",
           paddingInline: "5vw",
-          marginBottom: "1.5rem",
+          marginBottom: "1rem",
         }}
       >
-        <Title order={4} ta="center">
+        <Title order={3} className="font-bold text-center">
           Recent Crises
         </Title>
+        <div className="flex justify-center mb-8">
+          <Divider w="500px" color="#07553B" />
+        </div>
         {crises.slice(2).map((crisis) => (
           <Card
             key={crisis.id}
@@ -44,15 +56,16 @@ const CrisisSection = ({ crises, loading, error }) => {
             <Text>
               Severity:{" "}
               <Pill
-                className={
-                  crisis.severity === "low"
-                    ? "bg-yellow-200"
-                    : crisis.severity === "medium"
-                    ? "bg-orange-500"
-                    : crisis.severity === "high"
-                    ? "bg-red-700"
-                    : "bg-gray-400"
-                }
+                style={{
+                  backgroundColor:
+                    crisis.severity === "low"
+                      ? "#FEF3C7"
+                      : crisis.severity === "medium"
+                      ? "#F97316"
+                      : crisis.severity === "high"
+                      ? "#B91C1C"
+                      : "#9CA3AF",
+                }}
               >
                 {crisis.severity || "N/A"}
               </Pill>
@@ -61,16 +74,16 @@ const CrisisSection = ({ crises, loading, error }) => {
           </Card>
         ))}
       </Box>
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center">
         <Button
           variant="light"
-          color="blue"
+          color="#3f5041"
           onClick={() => navigate("/crisis")}
         >
           Show more
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

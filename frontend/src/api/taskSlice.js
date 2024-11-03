@@ -9,7 +9,7 @@ export const taskApi = createApi({
 
   endpoints: (builder) => ({
     getTasks: builder.query({
-      query: () => "task",
+      query: () => "tasks",
       providesTags: (result) =>
         result
           ? [
@@ -24,7 +24,7 @@ export const taskApi = createApi({
 
     getUserTask: builder.query({
       query: () => ({
-        url: "task/my-tasks", // Assuming it automatically filters by logged-in user
+        url: "tasks/my-tasks", // Assuming it automatically filters by logged-in user
         method: "GET",
       }),
       providesTags: (result) =>
@@ -40,7 +40,7 @@ export const taskApi = createApi({
     }),
     createTask: builder.mutation({
       query: (data) => ({
-        url: "task/create",
+        url: "tasks/create",
         method: "POST",
         body: data,
       }),
@@ -48,7 +48,7 @@ export const taskApi = createApi({
     }),
     updateTask: builder.mutation({
       query: (data) => ({
-        url: "task/update",
+        url: "tasks/update",
         method: "PUT",
         body: data,
       }),

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Bar } from "react-chartjs-2";
-import { Box, Button, Loader, Text } from "@mantine/core";
+import { Box, Button, Loader, Paper, Text } from "@mantine/core";
 import { FaDonate } from "react-icons/fa";
 import {
   Chart as ChartJS,
@@ -14,7 +14,6 @@ import {
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
-// Register the necessary chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -31,14 +30,13 @@ const FundSection = ({ dailyData, financialsData, loading, error }) => {
     return <Box>Something went wrong.</Box>;
   }
   const data = {
-    labels: ["Donations", "Expenses"], // X-axis labels
+    labels: ["Donations", "Expenses"],
     datasets: [
       {
-        // label: "Today's Funds",
         data: [
           parseFloat(dailyData.today_donation),
           parseFloat(dailyData.today_expense),
-        ], // Y-axis values
+        ],
         backgroundColor: ["#4caf50", "#f44336"],
       },
     ],
@@ -58,23 +56,27 @@ const FundSection = ({ dailyData, financialsData, loading, error }) => {
   };
 
   return (
-    <>
-      <Box className="flex flex-col md:flex-row">
-        <div className="w-full md:w-1/2 mb-4 md:mb-0 text-center place-content-center">
-          <Text size="lg" weight={500}>
-            Today&apos;s Summary
-          </Text>
-          <Text>Fund: {financialsData?.fund || "N/A"}</Text>
-          <Text>
-            Total Donations: {financialsData?.total_donation || "N/A"}
-          </Text>
-          <Text>Total Expenses: {financialsData?.total_expense || 0}</Text>
+    <div className="py-12 bg-[#abd7f3]">
+      <Box className="flex flex-col md:flex-row ">
+        <div className="w-full md:w-1/2 mb-4 md:mb-0 flex flex-col items-center place-content-center">
+          <Paper radius="lg" shadow="md" p="xl" className="text-center">
+            <Text size="lg" fw={700} mb={4}>
+              Today&apos;s Summary
+            </Text>
+            <Text fw={600}>Fund: {financialsData?.fund || "N/A"}</Text>
+            <Text fw={600}>
+              Total Donations: {financialsData?.total_donation || "N/A"}
+            </Text>
+            <Text fw={600}>
+              Total Expenses: {financialsData?.total_expenses || 0}
+            </Text>
+          </Paper>
         </div>
         <div className="sm:w-[80vw] md:w-1/3 sm:mx-auto">
           <Bar data={data} options={options} />
         </div>
       </Box>
-      <div className="flex justify-center mt-8 mb-6">
+      <div className="flex justify-center mt-12 mb-0">
         <Button
           leftSection={<FaDonate size={14} />}
           color="orange"
@@ -83,7 +85,7 @@ const FundSection = ({ dailyData, financialsData, loading, error }) => {
           Donate
         </Button>
       </div>
-    </>
+    </div>
   );
 };
 

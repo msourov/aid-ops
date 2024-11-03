@@ -8,6 +8,19 @@ export const fetchCrisisById = async (id) => {
   return pool.query("SELECT * FROM crises WHERE id = ?", [id]);
 };
 
+export const fetchCrisisOptions = async () => {
+  return pool.query(`SELECT crises.id, crisis.title, crisis.severity FROM crises
+    WHERE status = 'approved' 
+    ORDER BY 
+    CASE
+      WHEN severity = 'high' THEN 1
+      WHEN severity = 'medium' THEN 2
+      WHEN severity = 'low' THEN 3
+      ELSE 4
+    END;
+       `);
+};
+
 export const createCrisisInDB = async (data, userId) => {
   const { title, description, severity, location, status } = data;
   const connection = await pool.getConnection();

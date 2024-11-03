@@ -5,7 +5,7 @@ export const inventorySchema = (data) => {
     item_name: Joi.string().min(1).required(),
     item_type: Joi.string().valid("relief", "expense").required(),
     quantity: Joi.string().required(),
-    cost: Joi.number().precision(2).positive().required(),
+    cost: Joi.number().optional(),
   });
   return schema.validate(data);
 };

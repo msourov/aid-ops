@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Loader, Paper, Table, TextInput } from "@mantine/core";
+import { Button, Loader, Paper, Select, Table, TextInput } from "@mantine/core";
 import { useCreateTaskMutation, useGetTasksQuery } from "../../api/taskSlice";
+import { useGetVolunteerOptionsQuery } from "../../api/volunteerSlice";
 
 const taskSchema = z.object({
   task_description: z.string().min(1, "Task description is required"),
-  volunteer_id: z.number().int().min(1, "Volunteer ID is required"),
-  crisis_id: z.number().int().min(1, "Crisis ID is required"),
+  // volunteer_id: z.number().int().min(1, "Volunteer ID is required"),
+  // crisis_id: z.number().int().min(1, "Crisis ID is required"),
 });
 
 const VolunteerManagement = () => {
@@ -20,18 +21,31 @@ const VolunteerManagement = () => {
   });
 
   const { data: tasks = [], isLoading, error } = useGetTasksQuery();
+  const { data: volunteerOptions = [] } = useGetVolunteerOptionsQuery();
   const [createTask] = useCreateTaskMutation();
 
   const onSubmit = async (data) => {
+    console.log(data);
     await createTask(data);
   };
-  console.log("Loading:", isLoading);
+
+  const options = volunteerOptions.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }));
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error fetching tasks: {error.message}</div>;
 
   return (
-    <div >
-      <Paper withBorder shadow="md" radius="md" px={20} className="mx-[5vw]">
+    <div>
+      <Paper
+        withBorder
+        shadow="md"
+        radius="md"
+        px={20}
+        className="mx-auto w-[90%] md:w-[60%]"
+      >
         <form onSubmit={handleSubmit(onSubmit)} className="p-20">
           <TextInput
             label="Task Description"
@@ -42,7 +56,14 @@ const VolunteerManagement = () => {
             error={errors.task_description?.message}
           />
 
-          <TextInput
+          <Select
+            data={options}
+            placeholder="Select Volunteer"
+            {...register("volunteer_id")}
+            error={errors.volunteer_id?.message}
+          />
+
+          {/* <TextInput
             label="Volunteer ID"
             placeholder="Enter Volunteer ID"
             type="number"
@@ -50,7 +71,7 @@ const VolunteerManagement = () => {
             radius="md"
             {...register("volunteer_id")}
             error={errors.volunteer_id?.message}
-          />
+          /> */}
 
           <TextInput
             label="Crisis ID"
