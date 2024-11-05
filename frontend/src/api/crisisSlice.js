@@ -8,9 +8,24 @@ export const crisisApi = createApi({
   tagTypes: [tagTypes.CRISIS],
   endpoints: (builder) => ({
     getCrises: builder.query({
-      query: () => ({
-        url: "crises",
+      query: ({ limit, offset }) => ({
+        url: `crises/all?limit=${limit}&offset=${offset}`,
         method: "GET",
+      }),
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ id }) => ({
+                tyoe: "Crisis",
+                id,
+              })),
+              { type: "Crisis", id: "LIST" },
+            ]
+          : [{ type: "Crisis", id: "LIST" }],
+    }),
+    getCrisesOptions: builder.query({
+      query: () => ({
+        url: "crises/options",
       }),
       providesTags: [{ type: "Crisis", id: "LIST" }],
     }),
@@ -48,6 +63,7 @@ export const crisisApi = createApi({
 
 export const {
   useGetCrisesQuery,
+  useGetCrisesOptionsQuery,
   useGetCrisisDetailQuery,
   useCreateCrisisMutation,
   useApproveCrisisMutation,

@@ -9,14 +9,14 @@ export const donationApi = createApi({
 
   endpoints: (builder) => ({
     getAllDonations: builder.query({
-      query: () => ({
-        url: "donations/all",
+      query: ({ limit, offset }) => ({
+        url: `donations/all?limit=${limit}&offset=${offset}`,
         method: "GET",
       }),
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({
+              ...result.data.map(({ id }) => ({
                 type: "Donation",
                 id,
               })),

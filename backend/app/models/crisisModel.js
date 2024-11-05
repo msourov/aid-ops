@@ -1,7 +1,14 @@
 import { pool } from "../config/dbconfig.js";
 
-export const fetchCrises = async () => {
-  return pool.query("SELECT * FROM crises ORDER BY created_at DESC");
+export const fetchCrises = async ({ limit, offset }) => {
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total FROM crises`
+  );
+  const [crises] = await pool.query(
+    "SELECT * FROM crises ORDER BY created_at DESC LIMIT ? OFFSET ?",
+    [limit, offset]
+  );
+  return { crises, total };
 };
 
 export const fetchCrisisById = async (id) => {
@@ -9,7 +16,7 @@ export const fetchCrisisById = async (id) => {
 };
 
 export const fetchCrisisOptions = async () => {
-  return pool.query(`SELECT crises.id, crisis.title, crisis.severity FROM crises
+  return pool.query(`SELECT crises.id, crises.title, crises.severity FROM crises
     WHERE status = 'approved' 
     ORDER BY 
     CASE

@@ -1,9 +1,17 @@
 import { pool } from "../config/dbconfig.js";
 import { broadcastData } from "../index.js";
 
-export const fetchAllDonations = async () => {
-  const [donations] = await pool.query("SELECT * FROM donations");
-  return donations;
+export const fetchAllDonations = async ({ limit, offset }) => {
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total FROM donations`
+  );
+  console.log(total);
+
+  const [donations] = await pool.query(
+    "SELECT * FROM donations LIMIT ? OFFSET ?",
+    [limit, offset]
+  );
+  return { donations, total };
 };
 
 export const fetchTotalDonation = async () => {

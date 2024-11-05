@@ -6,13 +6,20 @@ import {
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { donorSchema } from "../validators/donationValidator.js";
 
-export const getAllDonations = asyncHandler(async (req, res) => {
-  try {
-    const donations = await fetchAllDonations();
-    res.status(200).json(donations);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching donation data", error });
-  }
+export const getAllDonations = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+
+  const { donations, total } = await fetchAllDonations({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+
+  req.data = donations;
+  req.totalRecords = total;
+  req.limit = parseInt(limit);
+  req.offset = parseInt(offset);
+
+  next();
 });
 
 export const getTotalDonation = asyncHandler(async (req, res) => {

@@ -1,7 +1,14 @@
 import { pool } from "../config/dbconfig.js";
 
 export const fetchTasks = async () => {
-  return pool.query("SELECT * FROM tasks");
+  return pool.query(`SELECT t.*, JSON_OBJECT('id', volunteer_user.id, 'name', volunteer_user.name) as volunteer, 
+    JSON_OBJECT('id', c.id, 'name', c.title) AS crisis, 
+    JSON_OBJECT('id', u.id, 'name', u.name) as created_by 
+    FROM tasks t JOIN users u ON t.created_by = u.id
+    JOIN crises c on t.crisis_id = c.id
+    JOIN volunteers v ON t.volunteer_id = v.user_id
+    JOIN users volunteer_user on v.user_id = volunteer_user.id
+    `);
 };
 
 export const createTaskInDb = async (taskData) => {

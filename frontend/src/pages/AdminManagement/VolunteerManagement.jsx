@@ -4,10 +4,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Loader, Paper, Select, Table, TextInput } from "@mantine/core";
 import { useCreateTaskMutation, useGetTasksQuery } from "../../api/taskSlice";
 import { useGetVolunteerOptionsQuery } from "../../api/volunteerSlice";
+import { useGetCrisesOptionsQuery } from "../../api/crisisSlice";
+import classes from "../../global.module.css";
 
 const taskSchema = z.object({
   task_description: z.string().min(1, "Task description is required"),
-  // volunteer_id: z.number().int().min(1, "Volunteer ID is required"),
+  volunteer_id: z.number().int().min(1, "Volunteer ID is required"),
   // crisis_id: z.number().int().min(1, "Crisis ID is required"),
 });
 
@@ -22,6 +24,7 @@ const VolunteerManagement = () => {
 
   const { data: tasks = [], isLoading, error } = useGetTasksQuery();
   const { data: volunteerOptions = [] } = useGetVolunteerOptionsQuery();
+  const { data: crisesOptions = [] } = useGetCrisesOptionsQuery();
   const [createTask] = useCreateTaskMutation();
 
   const onSubmit = async (data) => {
@@ -29,9 +32,14 @@ const VolunteerManagement = () => {
     await createTask(data);
   };
 
-  const options = volunteerOptions.map((item) => ({
+  const vOptions = volunteerOptions.map((item) => ({
     label: item.name,
-    value: item.id,
+    value: item.id.toString(),
+  }));
+
+  const cOptions = crisesOptions.map((item) => ({
+    label: `${item.title} - ${item?.severity}`,
+    value: item.id.toString(),
   }));
 
   if (isLoading) return <div>Loading...</div>;
@@ -48,6 +56,7 @@ const VolunteerManagement = () => {
       >
         <form onSubmit={handleSubmit(onSubmit)} className="p-20">
           <TextInput
+            variant="filled"
             label="Task Description"
             placeholder="Provide details about the task"
             required
@@ -57,10 +66,35 @@ const VolunteerManagement = () => {
           />
 
           <Select
-            data={options}
+            variant="filled"
+            label="Volunteer"
+            data={vOptions}
             placeholder="Select Volunteer"
+            required
             {...register("volunteer_id")}
             error={errors.volunteer_id?.message}
+            comboboxProps={{
+              position: "bottom",
+              middlewares: { flip: false, shift: false },
+              offset: 0,
+              transitionProps: { transition: "pop", duration: 200 },
+            }}
+          />
+          <Select
+            classNames={{ option: classes.option }}
+            variant="filled"
+            label="Crisis"
+            data={cOptions}
+            placeholder="Select Crisis"
+            required
+            {...register("crisis_id")}
+            error={errors.crisis_id?.message}
+            comboboxProps={{
+              position: "bottom",
+              middlewares: { flip: false, shift: false },
+              offset: 0,
+              transitionProps: { transition: "pop", duration: 200 },
+            }}
           />
 
           {/* <TextInput
@@ -72,16 +106,17 @@ const VolunteerManagement = () => {
             {...register("volunteer_id")}
             error={errors.volunteer_id?.message}
           /> */}
+          {/* <Select data={} /> */}
 
-          <TextInput
-            label="Crisis ID"
+          {/* <TextInput
+            label="Crisis"
             placeholder="Enter Crisis ID"
             type="number"
             required
             radius="md"
             {...register("crisis_id")}
             error={errors.crisis_id?.message}
-          />
+          /> */}
 
           <div className="flex flex-col items-center">
             <Button
@@ -100,35 +135,35 @@ const VolunteerManagement = () => {
         <Table className="border border-gray-500">
           <Table.Thead className="bg-gray-300">
             <Table.Tr>
-              <Table.Th style={{ width: "5%" }}>ID</Table.Th>
-              <Table.Th style={{ width: "35%" }}>Description</Table.Th>
-              <Table.Th style={{ width: "15%" }}>Volunteer ID</Table.Th>
-              <Table.Th style={{ width: "15%" }}>Crisis ID</Table.Th>
-              <Table.Th style={{ width: "15%" }}>Status</Table.Th>
-              <Table.Th style={{ width: "15%" }}>Assigned At</Table.Th>
+              <Table.Th style={{ width: "5%" }}>Serial</Table.Th>
+              <Table.Th style={{ width: "30%" }}>Description</Table.Th>
+              <Table.Th style={{ width: "15%" }}>Volunteer</Table.Th>
+              <Table.Th style={{ width: "15%" }}>Crisis</Table.Th>
+              <Table.Th style={{ width: "10%" }}>Status</Table.Th>
+              <Table.Th style={{ width: "10%" }}>Assigned At</Table.Th>
               <Table.Th style={{ width: "15%" }}>Created By</Table.Th>
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {tasks.map((task) => (
+            {tasks.map((task, index) => (
               <Table.Tr key={task.id}>
-                <Table.Td style={{ width: "5%" }}>{task.id}</Table.Td>
-                <Table.Td style={{ width: "35%" }}>
+                <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
+                <Table.Td style={{ width: "30%" }}>
                   {task.task_description}
                 </Table.Td>
                 <Table.Td style={{ width: "15%" }}>
-                  {task.volunteer_id}
+                  {task.volunteer.name}
                 </Table.Td>
-                <Table.Td style={{ width: "15%" }}>{task.crisis_id}</Table.Td>
-                <Table.Td style={{ width: "15%" }}>
+                <Table.Td style={{ width: "10%" }}>{task.crisis.name}</Table.Td>
+                <Table.Td style={{ width: "10%" }}>
                   <span
                     className={
                       task.status === "pending"
-                        ? "bg-yellow-200"
+                        ? "bg-yellow-200 text-yellow-700 px-2 py-1 rounded-lg"
                         : task.status === "in-progress"
-                        ? "bg-orange-500"
+                        ? "bg-orange-200 text-orange-700 px-2 py-1 rounded-lg"
                         : task.status === "completed"
-                        ? "bg-green-500"
+                        ? "bg-green-200 text-green-700 px-2 py-1 rounded-lg"
                         : "bg-gray-400"
                     }
                   >
@@ -138,7 +173,9 @@ const VolunteerManagement = () => {
                 <Table.Td style={{ width: "15%" }}>
                   {new Date(task.assigned_at).toLocaleString()}
                 </Table.Td>
-                <Table.Td style={{ width: "15%" }}>{task.created_by}</Table.Td>
+                <Table.Td style={{ width: "15%" }}>
+                  {task.created_by.name}
+                </Table.Td>
               </Table.Tr>
             ))}
           </Table.Tbody>

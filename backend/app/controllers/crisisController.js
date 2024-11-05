@@ -9,9 +9,19 @@ import {
 import { crisisSchema } from "../validators/crisisValidator.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
-export const getCrises = asyncHandler(async (req, res) => {
-  const [crises] = await fetchCrises();
-  res.status(200).json(crises);
+export const getCrises = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+
+  const { crises, total } = await fetchCrises({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+  
+  req.data = crises;
+  req.totalRecords = total;
+  req.limit = limit;
+  req.offset = offset;
+  next();
 });
 
 export const getCrisesOptions = asyncHandler(async (req, res) => {
