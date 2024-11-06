@@ -15,21 +15,30 @@ export const fetchVolunteerInfo = async () => {
   }));
 };
 
-export const fetchAllVolunteers = async () => {
-  const [result] = await pool.query(`
+export const fetchAllVolunteers = async ({ limit, offset }) => {
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total FROM volunteers`
+  );
+  const [volunteers] = await pool.query(
+    `
     SELECT v.user_id, v.task_count, v.status, u.name, u.email,
            GROUP_CONCAT(t.crisis_id) AS assigned_crisis_id
     FROM volunteers v
     JOIN users u ON v.user_id = u.id
     LEFT JOIN tasks t ON v.user_id = t.volunteer_id
     GROUP BY v.user_id
-  `);
-  console.log("result", result);
-  return result;
+    LIMIT ? OFFSET ?
+  `,
+    [limit, offset]
+  );
+  return { total, volunteers };
 };
 
-export const fetchAvailableVolunteer = async () => {
-  const [result] = await pool.query(
+export const fetchAvailableVolunteer = async ({ limit, offset }) => {
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total FROM volunteers v WHERE v.status = 'idle'`
+  );
+  const [availableVolunteers] = await pool.query(
     `SELECT v.user_id, v.task_count, v.status, u.name, u.email,
            GROUP_CONCAT(t.crisis_id) AS assigned_crisis_id
     FROM volunteers v
@@ -37,9 +46,11 @@ export const fetchAvailableVolunteer = async () => {
     LEFT JOIN tasks t ON v.user_id = t.volunteer_id
     WHERE v.status = 'idle'
     GROUP BY v.user_id
-    `
+    LIMIT ? OFFSET ?
+    `,
+    [limit, offset]
   );
-  return result;
+  return { availableVolunteers, total };
 };
 
 export const fetchVolunteerOptions = async () => {

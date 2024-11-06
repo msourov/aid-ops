@@ -9,11 +9,11 @@ export const taskApi = createApi({
 
   endpoints: (builder) => ({
     getTasks: builder.query({
-      query: () => "tasks",
+      query: ({ limit, offset }) => `tasks/all?limit=${limit}&offset=${offset}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({
+              ...result.data.map(({ id }) => ({
                 type: "Task",
                 id,
               })),

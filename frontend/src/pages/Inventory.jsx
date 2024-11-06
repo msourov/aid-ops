@@ -7,7 +7,8 @@ import {
   Button,
   Paper,
   Select,
-  ScrollArea,
+  Pagination,
+  Skeleton,
 } from "@mantine/core";
 import {
   useAddToInventoryMutation,
@@ -18,7 +19,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { notifications } from "@mantine/notifications";
-import classes from "../global.module.css";
 
 const schema = z.object({
   item_name: z.string().min(1, { message: "Item name is required" }),
@@ -26,8 +26,48 @@ const schema = z.object({
   quantity: z.string().nonempty({ message: "Quantity is required" }),
 });
 
+const SkeletonRows = () => (
+  <Table.Tbody>
+    {Array(10)
+      .fill()
+      .map((_, i) => (
+        <Table.Tr key={i}>
+          <Table.Td style={{ width: "5%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "25%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "10%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "20%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+          <Table.Td style={{ width: "20%" }}>
+            <Skeleton height={24} radius="md" />
+          </Table.Td>
+        </Table.Tr>
+      ))}
+  </Table.Tbody>
+);
+
 const Inventory = () => {
-  const { data: inventoryItems, error, isLoading } = useGetInventoryDataQuery();
+  const [activePage, setPage] = useState(1);
+  const limit = 10;
+  const offset = 10 * (activePage - 1);
+
+  const {
+    data: inventory,
+    error,
+    isLoading,
+  } = useGetInventoryDataQuery({ limit: limit, offset: offset });
   const [createInventoryItem] = useAddToInventoryMutation();
   const [loading, setLoading] = useState(false);
 
@@ -46,6 +86,8 @@ const Inventory = () => {
     localStorage.clear();
   }
   console.log(error);
+
+  const handlePageChange = (page) => setPage(page);
 
   const onSubmit = async (data) => {
     setLoading(true);
@@ -74,12 +116,12 @@ const Inventory = () => {
 
   const item_type = watch("item_type");
 
-  if (isLoading) {
-    return <Loader />;
+  if (error.status === 401) {
+    localStorage.clear();
   }
 
   if (error) {
-    return <div>Error fetching inventory data.</div>;
+    return <div>Error fetching inventory data</div>;
   }
 
   return (
@@ -141,42 +183,59 @@ const Inventory = () => {
       </Box>
       <Box
         padding="md"
-        className="lg:w-[70%] max-h-[70svh] overflow-y-auto px-4 mx-auto shadow-lg"
+        className="mx-auto shadow-lg w-full"
+        style={{ border: "1px solid gray" }}
       >
-        <ScrollArea offsetScrollbars classNames={classes}>
-          <Table className="border border-gray-500 ">
-            <Table.Thead className="bg-gray-300 sticky">
-              <Table.Tr>
-                <Table.Th style={{ width: "5%" }}>ID</Table.Th>
-                <Table.Th style={{ width: "25%" }}>Item Name</Table.Th>
-                <Table.Th style={{ width: "25%" }}>Item Type</Table.Th>
-                <Table.Th style={{ width: "15%" }}>Quantity</Table.Th>
-                <Table.Th style={{ width: "15%" }}>Cost</Table.Th>
-                <Table.Th style={{ width: "15%" }}>Purchased By</Table.Th>
-                <Table.Th style={{ width: "15%" }}>Purchased Date</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
+        <Table className="border border-gray-500">
+          <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
+            <Table.Tr>
+              <Table.Th style={{ width: "5%" }}>ID</Table.Th>
+              <Table.Th style={{ width: "25%" }}>Item Name</Table.Th>
+              <Table.Th style={{ width: "10%" }}>Item Type</Table.Th>
+              <Table.Th style={{ width: "10%" }}>Quantity</Table.Th>
+              <Table.Th style={{ width: "10%" }}>Cost</Table.Th>
+              <Table.Th style={{ width: "20%" }}>Purchased By</Table.Th>
+              <Table.Th style={{ width: "20%" }}>Purchased Date</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          {isLoading ? (
+            <SkeletonRows />
+          ) : (
             <Table.Tbody>
-              {inventoryItems.map((item) => (
-                <Table.Tr key={item.id}>
-                  <Table.Td style={{ width: "5%" }}>{item.id}</Table.Td>
+              {inventory?.data.map((item, index) => (
+                <Table.Tr key={`i-${index}`}>
+                  <Table.Td style={{ width: "5%" }}>
+                    {index + offset + 1}
+                  </Table.Td>
                   <Table.Td style={{ width: "25%" }}>{item.item_name}</Table.Td>
-                  <Table.Td style={{ width: "25%" }}>{item.item_type}</Table.Td>
-                  <Table.Td style={{ width: "15%" }}>{item.quantity}</Table.Td>
-                  <Table.Td style={{ width: "15%" }}>
+                  <Table.Td style={{ width: "10%" }}>{item.item_type}</Table.Td>
+                  <Table.Td style={{ width: "10%" }}>{item.quantity}</Table.Td>
+                  <Table.Td style={{ width: "10%" }}>
                     {item.cost !== null ? item.cost : "N/A"}
                   </Table.Td>
-                  <Table.Td style={{ width: "15%" }}>
-                    {item.purchased_by}
+                  <Table.Td style={{ width: "20%" }}>
+                    {item.purchased_by.name}
                   </Table.Td>
-                  <Table.Td style={{ width: "15%" }}>
+                  <Table.Td style={{ width: "20%" }}>
                     {new Date(item.purchased_date).toLocaleString()}
                   </Table.Td>
                 </Table.Tr>
               ))}
             </Table.Tbody>
-          </Table>
-        </ScrollArea>
+          )}
+        </Table>
+        {!isLoading && inventory && (
+          <Pagination
+            total={Math.ceil(inventory.totalRecords / 10)}
+            page={activePage}
+            boundaries={3}
+            onChange={handlePageChange}
+            my="lg"
+            mr="md"
+            color="black"
+            className="flex justify-end"
+          />
+        )}
       </Box>
     </div>
   );

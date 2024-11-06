@@ -8,14 +8,14 @@ export const inventoryApi = createApi({
   tagTypes: [tagTypes.INVENTORY],
   endpoints: (builder) => ({
     getInventoryData: builder.query({
-      query: () => "inventory",
+      query: ({ limit, offset }) => `inventory?limit=${limit}&offset=${offset}`,
       transformResponse: (response) => {
         return response;
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Inventory", id })),
+              ...result.data.map(({ id }) => ({ type: "Inventory", id })),
               { type: "Inventory", id: "LIST" },
             ]
           : [{ type: "Inventory", id: "LIST" }],

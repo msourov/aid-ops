@@ -19,9 +19,9 @@ export const fetchTotalDonation = async () => {
   return data[0];
 };
 
-export const fetchDailyDonation = async () => {
+export const fetchMonthlyDonation = async () => {
   const [data] = await pool.query(
-    "SELECT sum(amount) as today_donation FROM donations WHERE DATE(donation_date)=CURDATE()"
+    "SELECT sum(amount) as total_donation FROM donations WHERE MONTH(donation_date) = MONTH(NOW() - INTERVAL 1 MONTH) AND YEAR(donation_date) = YEAR(NOW())"
   );
   return data[0];
 };

@@ -50,7 +50,7 @@ const Register = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/register",
+        "http://localhost:8080/api/v1/auth/register",
         data
       );
       console.log(response);

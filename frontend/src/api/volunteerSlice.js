@@ -8,12 +8,13 @@ export const volunteerApi = createApi({
   tagTypes: [tagTypes.VOLUNTEER],
 
   endpoints: (builder) => ({
-    getAvailableVolunteers: builder.query({
-      query: () => "users/available-volunteers",
+    getAllVolunteers: builder.query({
+      query: ({ limit, offset }) =>
+        `users/all-volunteers?limit=${limit}&offset=${offset}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ user_id }) => ({
+              ...result.data.map(({ user_id }) => ({
                 type: "Volunteer",
                 id: user_id,
               })),
@@ -21,12 +22,13 @@ export const volunteerApi = createApi({
             ]
           : [{ type: "Volunteer", id: "LIST" }],
     }),
-    getAllVolunteers: builder.query({
-      query: () => "users/all-volunteers",
+    getAvailableVolunteers: builder.query({
+      query: ({ limit, offset }) =>
+        `users/available-volunteers?limit=${limit}&offset=${offset}`,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ user_id }) => ({
+              ...result.data.map(({ user_id }) => ({
                 type: "Volunteer",
                 id: user_id,
               })),

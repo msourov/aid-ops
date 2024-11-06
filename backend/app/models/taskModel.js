@@ -1,14 +1,22 @@
 import { pool } from "../config/dbconfig.js";
 
-export const fetchTasks = async () => {
-  return pool.query(`SELECT t.*, JSON_OBJECT('id', volunteer_user.id, 'name', volunteer_user.name) as volunteer, 
+export const fetchTasks = async ({ limit, offset }) => {
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total from tasks;`
+  );
+  const [tasks] = await pool.query(
+    `SELECT t.*, JSON_OBJECT('id', volunteer_user.id, 'name', volunteer_user.name) as volunteer, 
     JSON_OBJECT('id', c.id, 'name', c.title) AS crisis, 
     JSON_OBJECT('id', u.id, 'name', u.name) as created_by 
     FROM tasks t JOIN users u ON t.created_by = u.id
     JOIN crises c on t.crisis_id = c.id
     JOIN volunteers v ON t.volunteer_id = v.user_id
     JOIN users volunteer_user on v.user_id = volunteer_user.id
-    `);
+    LIMIT ? OFFSET ?
+    `,
+    [limit, offset]
+  );
+  return { tasks, total };
 };
 
 export const createTaskInDb = async (taskData) => {
@@ -17,11 +25,11 @@ export const createTaskInDb = async (taskData) => {
   await connection.beginTransaction();
 
   try {
-    // Check if the crisis is unassigned
-    const [crisis] = await connection.query(
-      "SELECT * FROM tasks WHERE crisis_id = ?",
-      [crisis_id]
-    );
+    // // Check if the crisis is unassigned
+    // const [crisis] = await connection.query(
+    //   "SELECT * FROM tasks WHERE crisis_id = ?",
+    //   [crisis_id]
+    // );
 
     // Check if the volunteer is idle
     const [volunteer] = await connection.query(
@@ -29,9 +37,9 @@ export const createTaskInDb = async (taskData) => {
       [volunteer_id]
     );
 
-    if (crisis.length > 0) {
-      throw new Error("Crisis is already assigned to a task.");
-    }
+    // if (crisis.length > 0) {
+    //   throw new Error("Crisis is already assigned to a task.");
+    // }
 
     if (volunteer.length === 0) {
       throw new Error("Volunteer is not idle or does not exist.");

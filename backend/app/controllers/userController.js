@@ -62,27 +62,29 @@ export const getVolunteerInfo = asyncHandler(async (req, res) => {
   }
 });
 
-export const getAllVolunteers = asyncHandler(async (req, res) => {
-  try {
-    const volunteers = await fetchAllVolunteers();
-    console.log(volunteers);
-    res.status(200).json(volunteers);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error fetching volunteers", error });
-  }
+export const getAllVolunteers = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+  const { volunteers, total } = await fetchAllVolunteers({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+  req.data = volunteers;
+  req.totalRecords = total;
+
+  next();
 });
 
-export const getAvailableVolunteers = asyncHandler(async (req, res) => {
-  try {
-    const volunteers = await fetchAvailableVolunteer();
-    res.status(200).json(volunteers);
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: "Error fetching available volunteers", error });
-  }
+export const getAvailableVolunteers = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+  const { availableVolunteers, total } = await fetchAvailableVolunteer({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+  // console.log(availableVolunteers);
+  req.data = availableVolunteers;
+  req.totalRecords = total;
+
+  next();
 });
 
 export const getVolunteerOptions = asyncHandler(async (req, res) => {

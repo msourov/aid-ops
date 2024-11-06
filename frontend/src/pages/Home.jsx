@@ -1,73 +1,67 @@
-import { Container, Divider } from "@mantine/core";
+import { Box, Divider } from "@mantine/core";
 import FundSection from "../components/Home/FundSection";
 import CrisisSection from "../components/Home/CrisisSection";
-import VolunteerSection from "../components/Home/VolunteerSection";
-import { useGetTodayDonationExpenseQuery } from "../api/donationSlice";
+import { useGetMonthlyDonationExpenseQuery } from "../api/donationSlice";
 import { useGetFinancialDataQuery } from "../api/financialsSlice";
 import { useGetCrisesQuery } from "../api/crisisSlice";
-import { useEffect, useState } from "react";
+import { useGetTasksQuery } from "../api/taskSlice";
+import { ActivitySection } from "../components/Home/ActivitySection";
 
 const Home = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
-
   const {
-    data: dailyData,
-    isLoading: loadingDailyData,
-    error: dailyDataError,
-  } = useGetTodayDonationExpenseQuery();
+    data: monthlyData,
+    isLoading: loadingMonthlyData,
+    error: monthlyDataError,
+  } = useGetMonthlyDonationExpenseQuery();
   const {
-    data: financialsData,
+    data: financials,
     isLoading: loadingFinancialsData,
     error: financialDataError,
   } = useGetFinancialDataQuery();
   const {
-    data: crisesData,
+    data: crises,
     isLoading: crisesDataLoading,
     error: crisesError,
-  } = useGetCrisesQuery();
+  } = useGetCrisesQuery({ limit: 10, offset: 0 });
 
-  const filteredCrisisData =
-    crisesData && crisesData.filter((item) => item.status !== "rejected");
+  const {
+    data: tasks,
+    isLoading: tasksLoading,
+    error: tasksError,
+  } = useGetTasksQuery({ limit: 10, offset: 0 });
 
-  const getData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("http://localhost:8080/api/v1/users", {
-        method: "GET",
-      });
-      const data = await response.json();
-      setUsers(data);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    getData();
-  }, []);
+  const recentTasks = tasks?.data.filter(
+    (item) => item.status === "in-progress"
+  );
 
-  const volunteers = users && users.filter((item) => item.role === "volunteer");
+  console.log(JSON.stringify(recentTasks, undefined, 2));
+
+  const filteredCrisis =
+    crises && crises?.data.filter((item) => item.status !== "rejected");
+
   return (
-    <Container fluid className="overflow-y-auto text-[#07553B]">
-      {dailyData && financialsData && (
+    <Box className="overflow-y-auto text-[#07553B]">
+      {monthlyData && financials && (
         <FundSection
-          dailyData={dailyData}
-          financialsData={financialsData}
-          loading={loadingDailyData || loadingFinancialsData}
-          error={financialDataError || dailyDataError}
+          monthlyData={monthlyData}
+          financialsData={financials}
+          loading={loadingMonthlyData || loadingFinancialsData}
+          error={financialDataError || monthlyDataError}
         />
       )}
       <Divider color="gray" />
       <CrisisSection
-        crises={filteredCrisisData}
+        crises={filteredCrisis}
         loading={crisesDataLoading}
         error={crisesError}
       />
       <Divider color="gray" />
-      <VolunteerSection volunteers={volunteers} loading={loading} />
-    </Container>
+      <ActivitySection
+        recentTasks={recentTasks}
+        tasksLoading={tasksLoading}
+        error={tasksError}
+      />
+    </Box>
   );
 };
 

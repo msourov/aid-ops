@@ -1,35 +1,54 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Loader, Paper, Select, Table, TextInput } from "@mantine/core";
+import {
+  Button,
+  Loader,
+  Modal,
+  Paper,
+  Select,
+  Table,
+  Textarea,
+} from "@mantine/core";
 import { useCreateTaskMutation, useGetTasksQuery } from "../../api/taskSlice";
 import { useGetVolunteerOptionsQuery } from "../../api/volunteerSlice";
 import { useGetCrisesOptionsQuery } from "../../api/crisisSlice";
 import classes from "../../global.module.css";
+import { useDisclosure } from "@mantine/hooks";
 
 const taskSchema = z.object({
   task_description: z.string().min(1, "Task description is required"),
   volunteer_id: z.number().int().min(1, "Volunteer ID is required"),
-  // crisis_id: z.number().int().min(1, "Crisis ID is required"),
+  crisis_id: z.number().int().min(1, "Crisis ID is required"),
 });
 
 const VolunteerManagement = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(taskSchema),
   });
-
   const { data: tasks = [], isLoading, error } = useGetTasksQuery();
-  const { data: volunteerOptions = [] } = useGetVolunteerOptionsQuery();
+  const { data: volunteerOptions = [], refetch } =
+    useGetVolunteerOptionsQuery();
   const { data: crisesOptions = [] } = useGetCrisesOptionsQuery();
   const [createTask] = useCreateTaskMutation();
+  const [opened, { open, close }] = useDisclosure(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
     await createTask(data);
+    reset({
+      task_description: "",
+      volunteer_id: null,
+      crisis_id: null,
+    });
+    close();
+    await refetch();
   };
 
   const vOptions = volunteerOptions.map((item) => ({
@@ -46,94 +65,91 @@ const VolunteerManagement = () => {
   if (error) return <div>Error fetching tasks: {error.message}</div>;
 
   return (
-    <div>
-      <Paper
-        withBorder
-        shadow="md"
-        radius="md"
-        px={20}
-        className="mx-auto w-[90%] md:w-[60%]"
+    <div className="flex flex-col w-[90%] mx-auto">
+      <Modal opened={opened} size="lg" onClose={close} withCloseButton={false}>
+        <Paper className="mx-auto">
+          <form onSubmit={handleSubmit(onSubmit)} className="p-8">
+            <Textarea
+              variant="filled"
+              label="Task Description"
+              placeholder="Provide details about the task"
+              required
+              radius="md"
+              autosize
+              minRows={2}
+              maxRows={4}
+              {...register("task_description")}
+              error={errors.task_description?.message}
+            />
+
+            <Select
+              variant="filled"
+              label="Volunteer"
+              data={vOptions}
+              placeholder="Select Volunteer"
+              required
+              value={watch("volunteer_id")}
+              onChange={(value) => {
+                console.log("Selected Volunteer ID:", value);
+                setValue("volunteer_id", Number(value));
+              }}
+              error={errors.volunteer_id?.message}
+              comboboxProps={{
+                position: "bottom",
+                middlewares: { flip: false, shift: false },
+                offset: 0,
+                transitionProps: { transition: "pop", duration: 200 },
+              }}
+            />
+            <Select
+              classNames={{ option: classes.option }}
+              variant="filled"
+              label="Crisis"
+              data={cOptions}
+              placeholder="Select Crisis"
+              required
+              value={watch("crisis_id")}
+              onChange={(value) => setValue("crisis_id", Number(value))}
+              error={errors.crisis_id?.message}
+              comboboxProps={{
+                position: "bottom",
+                middlewares: { flip: false, shift: false },
+                offset: 0,
+                transitionProps: { transition: "pop", duration: 200 },
+              }}
+            />
+            <div className="flex flex-col items-center">
+              <Button
+                mt="xl"
+                type="submit"
+                color="black"
+                className="rounded-lg bg-black"
+                disabled={isLoading}
+              >
+                {isLoading ? <Loader color="white" size={20} /> : "Create Task"}
+              </Button>
+            </div>
+          </form>
+        </Paper>
+      </Modal>
+
+      <Button
+        variant="filled"
+        color="orange"
+        px="1.75rem"
+        className="flex self-end"
+        onClick={open}
       >
-        <form onSubmit={handleSubmit(onSubmit)} className="p-20">
-          <TextInput
-            variant="filled"
-            label="Task Description"
-            placeholder="Provide details about the task"
-            required
-            radius="md"
-            {...register("task_description")}
-            error={errors.task_description?.message}
-          />
-
-          <Select
-            variant="filled"
-            label="Volunteer"
-            data={vOptions}
-            placeholder="Select Volunteer"
-            required
-            {...register("volunteer_id")}
-            error={errors.volunteer_id?.message}
-            comboboxProps={{
-              position: "bottom",
-              middlewares: { flip: false, shift: false },
-              offset: 0,
-              transitionProps: { transition: "pop", duration: 200 },
-            }}
-          />
-          <Select
-            classNames={{ option: classes.option }}
-            variant="filled"
-            label="Crisis"
-            data={cOptions}
-            placeholder="Select Crisis"
-            required
-            {...register("crisis_id")}
-            error={errors.crisis_id?.message}
-            comboboxProps={{
-              position: "bottom",
-              middlewares: { flip: false, shift: false },
-              offset: 0,
-              transitionProps: { transition: "pop", duration: 200 },
-            }}
-          />
-
-          {/* <TextInput
-            label="Volunteer ID"
-            placeholder="Enter Volunteer ID"
-            type="number"
-            required
-            radius="md"
-            {...register("volunteer_id")}
-            error={errors.volunteer_id?.message}
-          /> */}
-          {/* <Select data={} /> */}
-
-          {/* <TextInput
-            label="Crisis"
-            placeholder="Enter Crisis ID"
-            type="number"
-            required
-            radius="md"
-            {...register("crisis_id")}
-            error={errors.crisis_id?.message}
-          /> */}
-
-          <div className="flex flex-col items-center">
-            <Button
-              mt="lg"
-              type="submit"
-              color="black"
-              className="rounded-lg bg-black"
-              disabled={isLoading}
-            >
-              {isLoading ? <Loader color="white" size={20} /> : "Create Task"}
-            </Button>
-          </div>
-        </form>
-      </Paper>
-      <Paper mx={"5vw"} my={"2rem"} shadow="lg">
-        <Table className="border border-gray-500">
-          <Table.Thead className="bg-gray-300">
+        Add
+      </Button>
+      <Paper
+        // mx={"2vw"}
+        my={"2rem"}
+        shadow="lg"
+        // style={{ border: "1px solid gray" }}
+      >
+        <Table>
+          <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
             <Table.Tr>
               <Table.Th style={{ width: "5%" }}>Serial</Table.Th>
               <Table.Th style={{ width: "30%" }}>Description</Table.Th>

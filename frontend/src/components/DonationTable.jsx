@@ -61,7 +61,7 @@ const DonationTable = () => {
       style={{ border: "1px solid gray" }}
     >
       <Table>
-        <Table.Thead className="bg-gray-300">
+        <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
           <Table.Tr>
             <Table.Th style={{ width: "5%" }}>Serial</Table.Th>
             <Table.Th style={{ width: "25%" }}>Donor Name</Table.Th>
@@ -97,7 +97,7 @@ const TableBody = ({ donations, activePage }) => {
     <Table.Tbody>
       {donations.map((donation, index) => (
         <Table.Tr key={donation.id}>
-          <Table.Td style={{ width: "5%" }}>
+          <Table.Td style={{ width: "5%", paddingBlock: "0.75rem" }}>
             {(activePage - 1) * 10 + index + 1}
           </Table.Td>
           <Table.Td style={{ width: "25%" }}>{donation.donor_name}</Table.Td>

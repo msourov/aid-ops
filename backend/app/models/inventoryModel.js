@@ -1,8 +1,16 @@
 import { broadcastData } from "../index.js";
 import { pool } from "../config/dbconfig.js";
 
-export const fetchInventoryData = async () => {
-  return pool.query("SELECT * FROM inventory");
+export const fetchInventoryData = async ({ limit, offset }) => {
+  console.log(limit, offset);
+  const [[{ total }]] = await pool.query(
+    `SELECT COUNT(*) as total FROM inventory`
+  );
+  const [inventoryData] = await pool.query(
+    "SELECT *, JSON_OBJECT('id', i.purchased_by, 'name', u.name) as purchased_by FROM inventory i LEFT JOIN users u ON i.purchased_by = u.id LIMIT ? OFFSET ?",
+    [limit, offset]
+  );
+  return { inventoryData, total };
 };
 
 export const fetchTotalExpense = async () => {
@@ -12,9 +20,9 @@ export const fetchTotalExpense = async () => {
   return data[0];
 };
 
-export const fetchDailyExpense = async () => {
+export const fetchMonthlyExpense = async () => {
   const [data] = await pool.query(
-    "SELECT SUM(cost) as today_expense FROM inventory WHERE item_type='expense' AND DATE(purchased_date)=CURDATE()"
+    "SELECT SUM(cost) as total_expense FROM inventory WHERE item_type='expense' AND MONTH(purchased_date) = MONTH(NOW() - INTERVAL 1 MONTH) AND YEAR(purchased_date) = YEAR(NOW())"
   );
   return data[0];
 };

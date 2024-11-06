@@ -17,6 +17,7 @@
     "@mantine/hooks": "^7.12.2",
     "@mantine/notifications": "^7.12.2",
     "@reduxjs/toolkit": "^2.2.7",
+    "@tabler/icons-react": "^3.21.0",
     "axios": "^1.7.7",
     "chart.js": "^4.4.4",
     "prop-types": "^15.8.1",

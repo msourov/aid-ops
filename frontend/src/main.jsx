@@ -10,7 +10,7 @@ import "@mantine/notifications/styles.css";
 import { Notifications } from "@mantine/notifications";
 
 const theme = createTheme({
-  fontFamily: "Open Sans, sans-serif",
+  fontFamily: "Lato, sans-serif",
   primaryColor: "cyan",
 });
 

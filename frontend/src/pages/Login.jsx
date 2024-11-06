@@ -30,14 +30,13 @@ const Login = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/user/login",
+        "http://localhost:8080/api/v1/auth/login",
         {
           email: data.email,
           password: data.password,
         }
       );
 
-      console.log(response.data);
       if (response.data.token) {
         setToken(response.data.token);
         localStorage.setItem("user", JSON.stringify(response.data.userData));

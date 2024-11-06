@@ -1,0 +1,48 @@
+.footer {
+  background-color: #000; /* Black background */
+  padding: 2rem 1rem;
+  color: #fff;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.section {
+  flex: 1;
+  min-width: 150px;
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.heading {
+  color: #f1f1f1;
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  display: block;
+  color: #ccc;
+  margin: 0.25rem 0;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.link:hover {
+  color: #fff;
+}
+
+.bottom {
+  text-align: center;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+  margin-top: 1.5rem;
+}

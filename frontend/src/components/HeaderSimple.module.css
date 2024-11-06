@@ -1,7 +1,7 @@
 .header {
-  margin-block: 1rem;
-  padding-bottom: 1rem;
-  background-color: var(--mantine-color-body);
+  padding-block: 1rem;
+  background-color: #ffeedd;
+  font-family: "Roboto";
   border-bottom: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
@@ -11,6 +11,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-family: "Roboto", sans-serif;
 }
 
 .link {
@@ -19,19 +20,16 @@
   padding: 0.5rem 0.75rem;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
-  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-0));
+  /* color: white; */
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
 
-  @mixin hover {
-    background-color: light-dark(
-      var(--mantine-color-gray-0),
-      var(--mantine-color-dark-6)
-    );
+  &:hover {
+    background-color: "#F26419";
   }
 
   [data-mantine-color-scheme] &[data-active] {
-    background-color: var(--mantine-color-blue-filled);
-    color: var(--mantine-color-white);
+    background-color: #00798c; /* New active background color (e.g., green) */
+    color: #ffffff; /* New active text color */
   }
 }

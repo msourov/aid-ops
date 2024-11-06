@@ -31,7 +31,7 @@ export const donationApi = createApi({
       }),
       providesTags: [{ type: "Donation", id: "LIST" }],
     }),
-    getTodayDonationExpense: builder.query({
+    getMonthlyDonationExpense: builder.query({
       query: () => ({
         url: "inventory/daily-donation-expense",
         method: "GET",
@@ -52,6 +52,6 @@ export const donationApi = createApi({
 export const {
   useGetAllDonationsQuery,
   useGetTotalDonationQuery,
-  useGetTodayDonationExpenseQuery,
+  useGetMonthlyDonationExpenseQuery,
   useCreateDonationMutation,
 } = donationApi;

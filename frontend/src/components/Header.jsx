@@ -55,6 +55,7 @@ const Header = () => {
       const subMenuItems = link.subLinks.map((subLink) => (
         <Menu.Item
           key={subLink.link}
+          className={classes.fontRoboto}
           onClick={(event) => {
             event.preventDefault();
             navigate(subLink.link);
@@ -73,7 +74,6 @@ const Header = () => {
         >
           <Menu.Target>
             <a
-              href={link.link}
               className={classes.link}
               data-active={active === link.link ? "true" : undefined}
               onClick={(event) => event.preventDefault()}

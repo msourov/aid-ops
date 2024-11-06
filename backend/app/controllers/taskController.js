@@ -7,14 +7,17 @@ import {
 import { asyncHandler } from "../utils/asyncHandler.js";
 export { taskSchema } from "../validators/taskValidator.js";
 
-export const getTasks = asyncHandler(async (req, res) => {
-  try {
-    const [tasks] = await fetchTasks();
-    res.status(200).json(tasks);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error fetching task data", error });
-  }
+export const getTasks = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+  const { tasks, total } = await fetchTasks({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+
+  req.data = tasks;
+  req.totalRecords = total;
+
+  next();
 });
 
 export const createTask = asyncHandler(async (req, res, next) => {

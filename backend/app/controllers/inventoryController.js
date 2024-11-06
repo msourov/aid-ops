@@ -1,29 +1,33 @@
-import { fetchDailyDonation } from "../models/donationModel.js";
+import { fetchMonthlyDonation } from "../models/donationModel.js";
 import {
   addToInventoryInDb,
-  fetchDailyExpense,
   fetchInventoryData,
+  fetchMonthlyExpense,
   fetchTotalExpense,
 } from "../models/inventoryModel.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { inventorySchema } from "../validators/inventoryValidator.js";
 
-export const getInventoryData = asyncHandler(async (req, res) => {
-  console.log("inventory req ", req);
-  try {
-    const [result] = await fetchInventoryData();
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching inventory data", error });
-  }
+export const getInventoryData = asyncHandler(async (req, res, next) => {
+  const { limit = 10, offset = 0 } = req.query;
+
+  const { inventoryData, total } = await fetchInventoryData({
+    limit: parseInt(limit),
+    offset: parseInt(offset),
+  });
+
+  req.data = inventoryData;
+  req.totalRecords = total;
+
+  next();
 });
 
-export const getDailyDonationExpense = asyncHandler(async (req, res) => {
+export const getMonthlyDonationExpense = asyncHandler(async (req, res) => {
   try {
-    const dailyDonation = await fetchDailyDonation();
-    const dailyExpense = await fetchDailyExpense();
-    console.log(dailyDonation, dailyExpense);
-    res.status(200).json({ ...dailyDonation, ...dailyExpense });
+    const lastMonthDonation = await fetchMonthlyDonation();
+    const lastMonthExpense = await fetchMonthlyExpense();
+    console.log(lastMonthDonation, lastMonthExpense);
+    res.status(200).json({ ...lastMonthDonation, ...lastMonthExpense });
   } catch (error) {
     res.status(500).json({ message: "Error fetching inventory data", error });
   }

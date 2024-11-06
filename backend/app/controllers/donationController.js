@@ -16,8 +16,6 @@ export const getAllDonations = asyncHandler(async (req, res, next) => {
 
   req.data = donations;
   req.totalRecords = total;
-  req.limit = parseInt(limit);
-  req.offset = parseInt(offset);
 
   next();
 });

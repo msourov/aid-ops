@@ -16,11 +16,9 @@ export const getCrises = asyncHandler(async (req, res, next) => {
     limit: parseInt(limit),
     offset: parseInt(offset),
   });
-  
+
   req.data = crises;
   req.totalRecords = total;
-  req.limit = limit;
-  req.offset = offset;
   next();
 });
 
