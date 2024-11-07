@@ -50,7 +50,7 @@ const Crisis = () => {
   );
 
   return (
-    <Box padding="md" className="">
+    <Box className="my-10">
       <Title order={3} align="center" mb={20}>
         All Crises
       </Title>

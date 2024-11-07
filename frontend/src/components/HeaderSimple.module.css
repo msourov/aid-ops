@@ -1,9 +1,39 @@
 .header {
-  padding-block: 1rem;
-  background-color: #ffeedd;
+  padding-block: 0.5rem;
+  background-color: #f9f9f9;
   font-family: "Roboto";
   border-bottom: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+}
+
+.logo {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  display: inline-block;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.08em;
+  /* box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); */
+  transition: all 0.3s ease;
+}
+
+.aid {
+  padding: 0.15rem 0.5rem;
+  background-color: #eaf4f4; /* Green color for 'Aid' */
+}
+
+.ops {
+  padding: 0.15rem 0.5rem;
+  color: #f9f9f9;
+  background-color: #3d3b8e; /* Red-orange color for 'Ops' */
+}
+
+.logo:hover {
+  transform: scale(1) translateY(-2px);
+  /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); */
+  cursor: pointer;
 }
 
 .inner {

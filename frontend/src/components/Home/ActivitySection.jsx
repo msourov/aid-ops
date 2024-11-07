@@ -20,7 +20,7 @@ const statusStyles = {
   "in-progress": {
     color: "black",
     backgroundColor: "#F97316",
-    icon: <IconCheck size={16} />,
+    icon: <IconCheck size={20} />,
   },
   completed: {
     color: "black",

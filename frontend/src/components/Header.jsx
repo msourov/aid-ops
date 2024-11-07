@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import {
-  Container,
   Group,
   Burger,
   Button,
   Notification,
   Menu,
   Center,
+  Box,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -106,49 +106,55 @@ const Header = () => {
   });
 
   return (
-    <header className={classes.header}>
-      <Container size="md" className={classes.inner}>
-        <Group gap={5} visibleFrom="xs">
-          {items}
-        </Group>
-        {!isAuthenticated().isAuthenticated ? (
-          <Button
-            variant="outline"
-            size="xs"
-            className="ml-2"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            size="xs"
-            className="ml-2"
-            onClick={handleLogout}
-          >
-            Logout
-          </Button>
-        )}
+    <header className={`${classes.header} w-[90%] lg:w-[95%] mx-auto`}>
+      <Box className={`${classes.inner} w-full flex justify-between`}>
+        <h1 className={classes.logo} onClick={() => navigate("/")}>
+          <span className={classes.aid}>Aid</span>
+          <span className={classes.ops}>Ops</span>
+        </h1>
+        <Box className="flex">
+          <Group gap={5} visibleFrom="xs">
+            {items}
+          </Group>
+          {!isAuthenticated().isAuthenticated ? (
+            <Button
+              variant="outline"
+              size="xs"
+              className="ml-2"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              size="xs"
+              className="ml-2"
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
+          )}
 
-        <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+          <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
 
-        {logoutMessage && (
-          <Notification
-            title="Logout"
-            color="teal"
-            onClose={() => setLogoutMessage("")}
-            style={{
-              position: "fixed",
-              bottom: 20,
-              right: 20,
-              zIndex: 999,
-            }}
-          >
-            {logoutMessage}
-          </Notification>
-        )}
-      </Container>
+          {logoutMessage && (
+            <Notification
+              title="Logout"
+              color="teal"
+              onClose={() => setLogoutMessage("")}
+              style={{
+                position: "fixed",
+                bottom: 20,
+                right: 20,
+                zIndex: 999,
+              }}
+            >
+              {logoutMessage}
+            </Notification>
+          )}
+        </Box>
+      </Box>
     </header>
   );
 };

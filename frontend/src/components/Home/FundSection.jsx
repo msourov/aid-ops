@@ -42,7 +42,7 @@ const FundSection = ({ monthlyData, financialsData, loading, error }) => {
           parseFloat(monthlyData.total_donation),
           parseFloat(monthlyData.total_expense),
         ],
-        backgroundColor: ["#81C784", "#EF5350"],
+        backgroundColor: ["#D2F898", "#FCFCFC"],
       },
     ],
   };
