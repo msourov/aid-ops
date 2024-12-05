@@ -42,7 +42,7 @@ const FundSection = ({ monthlyData, financialsData, loading, error }) => {
           parseFloat(monthlyData.total_donation),
           parseFloat(monthlyData.total_expense),
         ],
-        backgroundColor: ["#D2F898", "#FCFCFC"],
+        backgroundColor: ["#2E455D", "#A36D90"],
       },
     ],
   };
@@ -53,32 +53,32 @@ const FundSection = ({ monthlyData, financialsData, loading, error }) => {
       legend: {
         position: "top",
         labels: {
-          color: "white", // Change legend text color to white
+          color: "black", // Change legend text color to black
         },
       },
       title: {
         display: true,
         text: "Last Month's Statistics",
-        color: "white", // Change title text color to white
+        color: "black", // Change title text color to black
       },
     },
     scales: {
       x: {
         ticks: {
-          color: "white", // Change x-axis tick color to white
+          color: "black", // Change x-axis tick color to black
         },
       },
       y: {
         ticks: {
-          color: "white", // Change y-axis tick color to white
+          color: "black", // Change y-axis tick color to black
         },
       },
     },
   };
 
   return (
-    <div className="py-6 bg-[#1A535C]">
-      <Box className="flex flex-col md:flex-row ">
+    <div className="py-6 bg-[#F9F9F9]">
+      <Box className="flex flex-col md:flex-row">
         <div className="w-full md:w-1/2 mb-4 md:mb-0 flex flex-col items-center place-content-center">
           {loading ? (
             <LoadingFinancials />

@@ -1,6 +1,10 @@
 .header {
-  padding-block: 0.5rem;
-  background-color: #f9f9f9;
+  padding-block: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  opacity: 70%;
+  background-color: #1a2022;
   font-family: "Roboto";
   border-bottom: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
@@ -50,7 +54,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: var(--mantine-radius-sm);
   text-decoration: none;
-  /* color: white; */
+  color: white;
   font-size: var(--mantine-font-size-sm);
   font-weight: 500;
 

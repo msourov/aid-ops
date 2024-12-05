@@ -81,8 +81,8 @@ const Volunteer = () => {
   const handlePageChange = (page) => setPage(page);
 
   return (
-    <Paper shadow="md" mx={"5vw"} py={"2rem"}>
-      <Table className="border border-gray-500">
+    <Paper shadow="md" mx={"5vw"} py={"2rem"} my={16}>
+      <Table className="bg-blue-100 text-blue-900 font-semibold">
         <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
           <Table.Tr>
             <Table.Th style={{ width: "5%" }}>ID</Table.Th>

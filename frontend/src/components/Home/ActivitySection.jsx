@@ -1,13 +1,4 @@
-import {
-  Box,
-  Divider,
-  Text,
-  Title,
-  Card,
-  Button,
-  Loader,
-  SimpleGrid,
-} from "@mantine/core";
+import { Box, Text, Card, Button, Loader, SimpleGrid } from "@mantine/core";
 import PropTypes from "prop-types";
 import { IconCheck, IconAlertCircle, IconX } from "@tabler/icons-react"; // Ensure you have the Tabler icons installed
 
@@ -44,11 +35,15 @@ export const ActivitySection = ({ recentTasks, tasksLoading, error }) => {
   }
 
   if (error) {
-    return (
-      <Text color="red" align="center">
-        Error fetching tasks: {error.message}
-      </Text>
-    );
+    if (error.status === 401) {
+      return null;
+    } else {
+      return (
+        <Text color="red" align="center">
+          Error fetching tasks: {error.message}
+        </Text>
+      );
+    }
   }
 
   if (!recentTasks || recentTasks.length === 0) {
@@ -56,14 +51,14 @@ export const ActivitySection = ({ recentTasks, tasksLoading, error }) => {
   }
 
   return (
-    <div className="py-8 bg-[#4F484F] shadow-lg">
+    <div className="py-8  bg-[#F9F9F9] shadow-lg">
       <Box style={{ paddingInline: "5vw", marginBottom: "1rem" }}>
-        <Title order={3} className="font-bold text-[#F8F7FF] text-center">
+        {/* <Text className="text-black text-center" size="xl" fw="bold">
           Recent Activities
-        </Title>
+        </Text>
         <div className="flex justify-center mb-8">
-          <Divider w="500px" color="#F8F7FF" />
-        </div>
+          <Divider w="500px" color="#000" />
+        </div> */}
         <SimpleGrid cols={{ base: 1, sm: 2, md: 2, lg: 3 }} spacing="md">
           {recentTasks.map((task) => (
             <Card

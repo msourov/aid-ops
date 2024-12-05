@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useGetCrisesQuery } from "../api/crisisSlice";
-import { Table, Skeleton, Box, Title, Pagination } from "@mantine/core";
+import { Table, Skeleton, Box, Pagination } from "@mantine/core";
 
 const SkeletonRows = () => (
   <Table.Tbody>
@@ -51,13 +51,7 @@ const Crisis = () => {
 
   return (
     <Box className="my-10">
-      <Title order={3} align="center" mb={20}>
-        All Crises
-      </Title>
-      <Box
-        style={{ border: "1px solid gray" }}
-        className="shadow-lg pb-4 mx-[2vw]"
-      >
+      <Box className="shadow-xl pb-4 mx-[2vw] bg-red-50 text-gray-500 font-semibold">
         <Table>
           <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
             <Table.Tr>
@@ -93,11 +87,11 @@ const Crisis = () => {
                     <span
                       className={`font-semibold ${
                         crisis.severity === "low"
-                          ? "bg-yellow-200 text-yellow-500"
+                          ? "bg-green-200 text-green-500"
                           : crisis.severity === "medium"
-                          ? "bg-orange-300 text-orange-600"
+                          ? "bg-yellow-200 text-yellow-600"
                           : crisis.severity === "high"
-                          ? "bg-red-400 text-red-700"
+                          ? "bg-red-200 text-red-600"
                           : "bg-gray-400"
                       }`}
                       style={{
@@ -120,7 +114,8 @@ const Crisis = () => {
             page={activePage}
             boundaries={3}
             onChange={handlePageChange}
-            my="lg"
+            mt="xl"
+            mb="lg"
             mr="md"
             color="black"
             className="flex justify-end"

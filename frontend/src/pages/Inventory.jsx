@@ -116,7 +116,7 @@ const Inventory = () => {
 
   const item_type = watch("item_type");
 
-  if (error.status === 401) {
+  if (error?.status === 401) {
     localStorage.clear();
   }
 

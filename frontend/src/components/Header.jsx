@@ -106,7 +106,7 @@ const Header = () => {
   });
 
   return (
-    <header className={`${classes.header} w-[90%] lg:w-[95%] mx-auto`}>
+    <header className={`${classes.header} w-full lg:px-[5%] mx-auto`}>
       <Box className={`${classes.inner} w-full flex justify-between`}>
         <h1 className={classes.logo} onClick={() => navigate("/")}>
           <span className={classes.aid}>Aid</span>
@@ -128,6 +128,7 @@ const Header = () => {
           ) : (
             <Button
               variant="outline"
+              color="white"
               size="xs"
               className="ml-2"
               onClick={handleLogout}

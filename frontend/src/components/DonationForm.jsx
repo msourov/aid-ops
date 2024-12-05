@@ -1,12 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  TextInput,
-  NumberInput,
-  Paper,
-  Container,
-  Button,
-  Loader,
-} from "@mantine/core";
+import { TextInput, NumberInput, Paper, Button, Loader } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { useCreateDonationMutation } from "../api/donationSlice";
 import { useForm } from "react-hook-form";
@@ -61,50 +54,52 @@ const DonationForm = () => {
   };
 
   return (
-    <div className="flex justify-center">
-      <Container className="w-full max-w-lg">
-        <Paper withBorder shadow="xl" radius="md" p={30}>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <TextInput
-              label="Donor Name"
-              placeholder="John Doe"
-              {...register("donor_name")}
-              error={errors.donor_name?.message}
-              required
-            />
+    <Paper withBorder shadow="xl" radius="md" p={20} mb={30} bg="#7492C3">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex items-center justify-center gap-4"
+      >
+        <TextInput
+          variant="filled"
+          label="Donor Name"
+          placeholder="John Doe"
+          {...register("donor_name")}
+          error={errors.donor_name?.message}
+          required
+        />
 
-            <TextInput
-              label="Donor Email"
-              placeholder="johndoe@example.com"
-              {...register("donor_email")}
-              error={errors.donor_email?.message}
-              required
-            />
+        <TextInput
+          variant="filled"
+          label="Donor Email"
+          placeholder="johndoe@example.com"
+          {...register("donor_email")}
+          error={errors.donor_email?.message}
+          required
+        />
 
-            <NumberInput
-              label="Amount"
-              placeholder="100"
-              {...register("amount", { valueAsNumber: true })}
-              error={errors.amount?.message}
-              onChange={(value) => setValue("amount", value)}
-              required
-            />
+        <NumberInput
+          variant="filled"
+          label="Amount"
+          placeholder="100"
+          {...register("amount", { valueAsNumber: true })}
+          error={errors.amount?.message}
+          onChange={(value) => setValue("amount", value)}
+          required
+        />
 
-            <div className="flex flex-col items-center">
-              <Button
-                mt="lg"
-                type="submit"
-                color="black"
-                className="rounded-lg bg-black"
-                disabled={loading}
-              >
-                {loading ? <Loader color="white" size={20} /> : "Donate"}
-              </Button>
-            </div>
-          </form>
-        </Paper>
-      </Container>
-    </div>
+        <div className="flex flex-col items-center">
+          <Button
+            mt="lg"
+            type="submit"
+            color="black"
+            className="rounded-lg bg-[#3D3B8E]"
+            disabled={loading}
+          >
+            {loading ? <Loader color="white" size={20} /> : "Donate"}
+          </Button>
+        </div>
+      </form>
+    </Paper>
   );
 };
 

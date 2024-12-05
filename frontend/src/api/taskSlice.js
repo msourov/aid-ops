@@ -9,7 +9,10 @@ export const taskApi = createApi({
 
   endpoints: (builder) => ({
     getTasks: builder.query({
-      query: ({ limit, offset }) => `tasks/all?limit=${limit}&offset=${offset}`,
+      query: ({ limit, offset }) => ({
+        url: `tasks/all?limit=${limit}&offset=${offset}`,
+        method: "GET",
+      }),
       providesTags: (result) =>
         result
           ? [

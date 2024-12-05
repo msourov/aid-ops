@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +10,7 @@ import {
   Select,
   Table,
   Textarea,
+  Pagination,
 } from "@mantine/core";
 import { useCreateTaskMutation, useGetTasksQuery } from "../../api/taskSlice";
 import { useGetVolunteerOptionsQuery } from "../../api/volunteerSlice";
@@ -23,6 +25,10 @@ const taskSchema = z.object({
 });
 
 const VolunteerManagement = () => {
+  const [activePage, setActivePage] = useState(1);
+  const limit = 10;
+  const offset = (activePage - 1) * limit;
+
   const {
     register,
     handleSubmit,
@@ -33,7 +39,13 @@ const VolunteerManagement = () => {
   } = useForm({
     resolver: zodResolver(taskSchema),
   });
-  const { data: tasks = [], isLoading, error } = useGetTasksQuery();
+
+  const {
+    data: tasks = [],
+    isLoading,
+    error,
+  } = useGetTasksQuery({ limit, offset });
+
   const { data: volunteerOptions = [], refetch } =
     useGetVolunteerOptionsQuery();
   const { data: crisesOptions = [] } = useGetCrisesOptionsQuery();
@@ -62,7 +74,9 @@ const VolunteerManagement = () => {
   }));
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error fetching tasks: {error.message}</div>;
+  if (error) return <div>Error fetching tasks: {error?.message}</div>;
+
+  const totalTasks = tasks.length; // Replace this with the total count if available from your API
 
   return (
     <div className="flex flex-col w-[90%] mx-auto">
@@ -81,7 +95,6 @@ const VolunteerManagement = () => {
               {...register("task_description")}
               error={errors.task_description?.message}
             />
-
             <Select
               variant="filled"
               label="Volunteer"
@@ -137,17 +150,14 @@ const VolunteerManagement = () => {
         variant="filled"
         color="orange"
         px="1.75rem"
+        mt={30}
         className="flex self-end"
         onClick={open}
       >
         Add
       </Button>
-      <Paper
-        // mx={"2vw"}
-        my={"2rem"}
-        shadow="lg"
-        // style={{ border: "1px solid gray" }}
-      >
+
+      <Paper my={"2rem"} shadow="lg">
         <Table>
           <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
             <Table.Tr>
@@ -161,9 +171,11 @@ const VolunteerManagement = () => {
             </Table.Tr>
           </Table.Thead>
           <Table.Tbody>
-            {tasks.map((task, index) => (
+            {tasks?.data.map((task, index) => (
               <Table.Tr key={task.id}>
-                <Table.Td style={{ width: "5%" }}>{index + 1}</Table.Td>
+                <Table.Td style={{ width: "5%" }}>
+                  {index + 1 + offset}
+                </Table.Td>
                 <Table.Td style={{ width: "30%" }}>
                   {task.task_description}
                 </Table.Td>
@@ -196,6 +208,17 @@ const VolunteerManagement = () => {
             ))}
           </Table.Tbody>
         </Table>
+
+        <div className="flex justify-center mt-4">
+          <Pagination
+            total={Math.ceil(totalTasks / limit)} // Total pages based on total tasks and limit
+            page={activePage}
+            onChange={setActivePage} // Handle page change
+            boundaries={2}
+            my="lg"
+            color="black"
+          />
+        </div>
       </Paper>
     </div>
   );

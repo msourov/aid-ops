@@ -56,10 +56,7 @@ const DonationTable = () => {
   }
 
   return (
-    <Box
-      className="mx-[5vw] shadow-lg pb-4"
-      style={{ border: "1px solid gray" }}
-    >
+    <Box className="mx-[5vw] shadow-xl pb-2 bg-blue-100 text-gray-500 font-semibold">
       <Table>
         <Table.Thead className="bg-[#F7FFF7] text-[#195258]">
           <Table.Tr>

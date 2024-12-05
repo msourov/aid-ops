@@ -3,11 +3,11 @@ import DonationTable from "../components/DonationTable";
 
 const Donation = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center p-4">
-      <div className="donation-form md:w-[25%] w-[70%]">
+    <div className="flex flex-col items-center justify-center p-4 my-10">
+      <div className="donation-form w-fit">
         <DonationForm />
       </div>
-      <div className="donation-list md:w-[70%] w-[80%]">
+      <div className="donation-list w-[80%]">
         <DonationTable />
       </div>
     </div>
