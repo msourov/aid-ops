@@ -16,11 +16,17 @@ import { requestLogger } from "./middlewares/requestLogger.js";
 import { unknownEndpoint } from "./middlewares/unknownEndpoint.js";
 import financialsRouter from "./routes/financialsRoute.js";
 import authRouter from "./routes/authRoutes.js";
+import { pool } from "./config/dbconfig.js";
 
 dotenv.config();
 
+pool
+  .query("SELECT 1")
+  .then(() => console.log("Database connected successfully"))
+  .catch((err) => console.error("Database connection error:", err));
+
 const app = express();
-const port = process.env.DB_PORT || 5000;
+const port = 8000;
 
 const server = createServer(app);
 const wss = new WebSocketServer({ server });

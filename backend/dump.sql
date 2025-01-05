@@ -16,6 +16,10 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Current Database: `disaster_management`
+--
+USE `sql12753497`;
+--
 -- Table structure for table `crises`
 --
 
@@ -32,13 +36,13 @@ CREATE TABLE `crises` (
   `created_by` int DEFAULT NULL,
   `reviewed_by` int DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL,
   PRIMARY KEY (`id`),
   KEY `created_by` (`created_by`),
   KEY `approved_by` (`reviewed_by`),
   CONSTRAINT `crises_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`),
   CONSTRAINT `crises_ibfk_2` FOREIGN KEY (`reviewed_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +69,7 @@ CREATE TABLE `donations` (
   `amount` decimal(10,2) NOT NULL,
   `donation_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +78,7 @@ CREATE TABLE `donations` (
 
 LOCK TABLES `donations` WRITE;
 /*!40000 ALTER TABLE `donations` DISABLE KEYS */;
-INSERT INTO `donations` VALUES (1,'Alice Smith','alice.smith@example.com',1000.00,'2024-09-20 05:15:14'),(2,'Bob Johnson','bob.johnson@example.com',500.50,'2024-09-20 05:15:14'),(3,'Charlie Brown','charlie.brown@example.com',750.75,'2024-09-20 05:15:14'),(4,'Diana Prince','diana.prince@example.com',1200.00,'2024-09-20 05:15:14'),(5,'Eve Adams','eve.adams@example.com',300.25,'2024-09-20 05:15:14'),(6,'Sakib','sakib@gmail.com',2000.00,'2024-09-20 17:23:17'),(7,'Rakib','rakib@gmail.com',5000.00,'2024-09-21 16:05:45'),(8,'MrX','mrx@gmail.com',20000.00,'2024-09-21 23:45:31'),(9,'Brad','brad@gmail.com',500.00,'2024-09-22 13:20:04'),(10,'Max','max@gmail.com',5000.00,'2024-09-23 02:40:25');
+INSERT INTO `donations` VALUES (1,'Alice Smith','alice.smith@example.com',1000.00,'2024-09-20 05:15:14'),(2,'Bob Johnson','bob.johnson@example.com',500.50,'2024-09-20 05:15:14'),(3,'Charlie Brown','charlie.brown@example.com',750.75,'2024-09-20 05:15:14'),(4,'Diana Prince','diana.prince@example.com',1200.00,'2024-09-20 05:15:14'),(5,'Eve Adams','eve.adams@example.com',300.25,'2024-09-20 05:15:14'),(6,'Sakib','sakib@gmail.com',2000.00,'2024-09-20 17:23:17'),(7,'Rakib','rakib@gmail.com',5000.00,'2024-09-21 16:05:45'),(8,'MrX','mrx@gmail.com',20000.00,'2024-09-21 23:45:31'),(9,'Brad','brad@gmail.com',500.00,'2024-09-22 13:20:04'),(10,'Max','max@gmail.com',5000.00,'2024-09-23 02:40:25'),(11,'Pitt','pitt@gmail.com',500.00,'2024-10-20 02:42:28'),(12,'Henry','henry@gmail.com',10000.00,'2024-10-21 08:44:22'),(13,'Bub','bub@gmail.com',2000.00,'2024-10-28 02:55:22'),(14,'Helen','helen@gmail.com',5000.00,'2024-10-28 02:55:58'),(15,'Arthur','arthur@gmail.com',2000.00,'2024-10-28 03:00:41'),(16,'Mark','mark@gmail.com',1100.00,'2024-10-28 05:10:45'),(17,'Mhabubb','mahbabub@gmail.com',5000.00,'2024-10-28 05:17:49'),(18,'John Cena','johncena@gmail.com',500.00,'2024-11-06 10:10:06');
 /*!40000 ALTER TABLE `donations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +95,7 @@ CREATE TABLE `financials` (
   `total_expenses` decimal(10,2) DEFAULT '0.00',
   `total_donation` decimal(10,2) DEFAULT '0.00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +104,7 @@ CREATE TABLE `financials` (
 
 LOCK TABLES `financials` WRITE;
 /*!40000 ALTER TABLE `financials` DISABLE KEYS */;
-INSERT INTO `financials` VALUES (1,15051.50,21200.00,25500.00);
+INSERT INTO `financials` VALUES (1,34151.50,28200.00,51600.00);
 /*!40000 ALTER TABLE `financials` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -122,7 +126,7 @@ CREATE TABLE `inventory` (
   PRIMARY KEY (`id`),
   KEY `purchased_by` (`purchased_by`),
   CONSTRAINT `inventory_ibfk_1` FOREIGN KEY (`purchased_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +135,7 @@ CREATE TABLE `inventory` (
 
 LOCK TABLES `inventory` WRITE;
 /*!40000 ALTER TABLE `inventory` DISABLE KEYS */;
-INSERT INTO `inventory` VALUES (1,'Water Bottles','relief','100',NULL,1,'2024-09-20 04:30:00'),(2,'Blankets','relief','50',NULL,2,'2024-09-21 03:00:00'),(3,'Canned Food','relief','200',NULL,1,'2024-09-22 05:45:00'),(4,'First Aid Kits','relief','30',NULL,3,'2024-09-22 08:15:00'),(5,'Stationery','expense','50',326.00,17,'2024-09-21 02:30:00'),(6,'Transportation Cost','expense','1',232.00,14,'2024-09-22 07:00:00'),(7,'Fuel for Generators','expense','100',174.00,10,'2024-09-22 10:30:00'),(8,'Administrative Supplies','expense','40',162.00,14,'2024-09-23 03:15:00'),(10,'Rice, salt, eggs','expense','20kg',10000.00,12,'2024-09-21 16:20:55'),(12,'Utensils','expense','10 unit',1000.00,12,'2024-09-21 23:44:47'),(13,'Eggs','relief','500',5000.00,19,'2024-09-23 02:21:17'),(14,'Boat','expense','2',20000.00,19,'2024-09-23 02:36:49'),(15,'Medicine','expense','10',200.00,19,'2024-09-23 02:39:06');
+INSERT INTO `inventory` VALUES (1,'Water Bottles','relief','100',NULL,1,'2024-09-20 04:30:00'),(2,'Blankets','relief','50',NULL,2,'2024-09-21 03:00:00'),(3,'Canned Food','relief','200',NULL,1,'2024-09-22 05:45:00'),(4,'First Aid Kits','relief','30',NULL,3,'2024-09-22 08:15:00'),(5,'Stationery','expense','50',326.00,17,'2024-09-21 02:30:00'),(6,'Transportation Cost','expense','1',232.00,14,'2024-09-22 07:00:00'),(7,'Fuel for Generators','expense','100',174.00,10,'2024-09-22 10:30:00'),(8,'Administrative Supplies','expense','40',162.00,14,'2024-09-23 03:15:00'),(10,'Rice, salt, eggs','expense','20kg',10000.00,12,'2024-09-21 16:20:55'),(12,'Utensils','expense','10 unit',1000.00,12,'2024-09-21 23:44:47'),(13,'Eggs','relief','500',5000.00,19,'2024-09-23 02:21:17'),(14,'Boat','expense','2',20000.00,19,'2024-09-23 02:36:49'),(15,'Medicine','expense','10',200.00,19,'2024-09-23 02:39:06'),(16,'Plates','expense','80',2000.00,12,'2024-10-20 02:52:18'),(17,'Dry food','expense','50 kg',5000.00,12,'2024-10-28 03:23:18'),(18,'Medicine','relief','100',0.00,12,'2024-10-28 03:32:39'),(19,'Item 10','expense','50',0.00,12,'2024-10-28 05:12:12'),(20,'Item 11','expense','100',0.00,12,'2024-10-28 05:12:46'),(21,'Item 12','expense','20',0.00,12,'2024-10-28 05:13:37');
 /*!40000 ALTER TABLE `inventory` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -146,12 +150,12 @@ CREATE TABLE `reports` (
   `id` int NOT NULL AUTO_INCREMENT,
   `report_type` enum('donation','expense','crisis') NOT NULL,
   `generated_by` int NOT NULL,
-  `report_data` json DEFAULT NULL,
+  -- `report_data` json DEFAULT NULL,
   `generated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `generated_by` (`generated_by`),
   CONSTRAINT `reports_ibfk_1` FOREIGN KEY (`generated_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +188,7 @@ CREATE TABLE `tasks` (
   CONSTRAINT `fk_volunteer` FOREIGN KEY (`volunteer_id`) REFERENCES `volunteers` (`user_id`),
   CONSTRAINT `tasks_ibfk_1` FOREIGN KEY (`volunteer_id`) REFERENCES `volunteers` (`user_id`),
   CONSTRAINT `tasks_ibfk_2` FOREIGN KEY (`crisis_id`) REFERENCES `crises` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +197,7 @@ CREATE TABLE `tasks` (
 
 LOCK TABLES `tasks` WRITE;
 /*!40000 ALTER TABLE `tasks` DISABLE KEYS */;
-INSERT INTO `tasks` VALUES (9,'Assist with evacuation procedures',10,1,'pending','2024-09-22 14:07:49',1),(10,'Provide medical support at the shelter',11,1,'in-progress','2024-09-22 14:07:49',1),(11,'Distribute food supplies',12,2,'completed','2024-09-22 14:07:49',2),(12,'Set up a communication center',13,2,'pending','2024-09-22 14:07:49',2),(13,'Conduct damage assessment',14,3,'pending','2024-09-22 14:07:49',1),(14,'Organize donation drives',15,3,'completed','2024-09-22 14:07:49',3),(15,'Coordinate with local authorities',16,4,'in-progress','2024-09-22 14:07:49',3),(16,'Provide psychological support',17,4,'pending','2024-09-22 14:07:49',2);
+INSERT INTO `tasks` VALUES (9,'Assist with evacuation procedures',10,1,'pending','2024-09-22 14:07:49',1),(10,'Provide medical support at the shelter',11,1,'in-progress','2024-09-22 14:07:49',1),(11,'Distribute food supplies',12,2,'completed','2024-09-22 14:07:49',2),(12,'Set up a communication center',13,2,'pending','2024-09-22 14:07:49',2),(13,'Conduct damage assessment',14,3,'pending','2024-09-22 14:07:49',1),(14,'Organize donation drives',15,3,'completed','2024-09-22 14:07:49',3),(15,'Coordinate with local authorities',16,4,'in-progress','2024-09-22 14:07:49',3),(16,'Provide psychological support',17,4,'pending','2024-09-22 14:07:49',2),(18,'Move affected people to safe locations.',20,1,'pending','2024-11-06 13:20:44',12),(19,'Provide vehicles where necessary for movements.',21,1,'pending','2024-11-06 14:23:09',12),(20,'Distribute warm clothes at the shelter.',23,2,'pending','2024-11-06 15:29:58',12);
 /*!40000 ALTER TABLE `tasks` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -214,8 +218,8 @@ CREATE TABLE `users` (
   `role` enum('admin','volunteer') NOT NULL DEFAULT 'volunteer',
   `age` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `email` (`email`(191))
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +228,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'John Doe','johndoe@example.com','password123','1234567890','2024-09-19 08:17:27','volunteer',38),(2,'Jane Smith','janesmith@example.com','password456','0987654321','2024-09-19 08:17:27','volunteer',18),(3,'Mike Johnson','mikejohnson@example.com','password789','1122334455','2024-09-19 08:17:27','volunteer',45),(10,'Mahmud Hasan Sourov','sourov@gmail.com','$2b$10$gbi9Ye7WbOVqpxJyrk7EiuzmIbrrg10cJLhC3QvCnBxwmMGo2Dqji','01523422243','2024-09-20 04:05:58','volunteer',44),(11,'Sourov','sourov12@gmail.com','$2b$10$idfQELSwQzOfBDWK1A2K8uySBOAYIUe5A9ACO.9f2frUgD3bQVIGy','01523422243','2024-09-20 04:58:56','volunteer',31),(12,'Mahmud Hasan','mahmud@gmail.com','$2b$10$w3AlxPES61IRNyWK6khhEOqhb6r8c6j8MEVhuhJDihk97G58LuqXK','01523422243','2024-09-20 04:59:44','admin',12),(13,'Mahabobur Rahman','mahabub@gmail.com','$2b$10$Z60kFUvWZAxPZTYlqMvjpuH/wEhEh76XzMe/Q.cZD7eYUSZiURAHG','01523423443','2024-09-20 05:27:14','admin',36),(14,'Frodo','frodo@gmail.com','$2b$10$kGZ0HPY5csLV7rEIy9Q9wuWn3KD6OUlxr32cm7lOtBx3Yg5tAg5o2','01523123443','2024-09-20 05:27:45','volunteer',15),(15,'Sam','sam@gmail.com','$2b$10$jcgvG1eV8J4FCqfjvPUBQuXL9YmydKH9aUGXEHx7cR2w.RHS97MQ6','01523123443','2024-09-20 05:27:53','volunteer',33),(16,'Gandalf','gandalf@gmail.com','$2b$10$mDzb5AjfkcfMYaZDkVEbL.bB5ImeuJ/jBipDHBh/hHrFFJ8GFRHCG','01523123443','2024-09-20 05:28:03','volunteer',32),(17,'Aragon','aragon@gmail.com','$2b$10$xO7jkmyGwym8X3bvLJjFcuH2iY.FPKfHlGk05qtikXyF1kNSYW2TK','01942313443','2024-09-20 05:28:15','volunteer',47),(18,'Legolas','legolas@gmail.com','$2b$10$KIE1bmuPc72rIE2rBkiiF.JsGR/9pDf169gYb9QbmUidpf2B.48f.','01434213443','2024-09-20 05:28:35','volunteer',13),(19,'Gimli','gimli@gmail.com','$2b$10$6vDVN8xiDRv3YzGSm1AOSeHJ.dWPDremCi6TXW7ZxNMmZkyjc11i2','012312313123','2024-09-22 05:34:30','volunteer',60),(20,'Pippin','pippin@gmail.com','$2b$10$C471XGgdElnxBgSLbPYYGehbCHFZaOiYxFoJ5iWjxxIIRB6.K2zrG','0123123121','2024-09-22 05:39:25','volunteer',35),(21,'Merry','merry@gmail.com','$2b$10$LkEXjQHNoKSOVQtm3.23ZurO71hFaqVTSBn/NuhFHAX4ZvF9duIqS','12312432321','2024-09-22 05:48:59','volunteer',32);
+INSERT INTO `users` VALUES (1,'John Doe','johndoe@example.com','password123','1234567890','2024-09-19 08:17:27','volunteer',38),(2,'Jane Smith','janesmith@example.com','password456','0987654321','2024-09-19 08:17:27','volunteer',18),(3,'Mike Johnson','mikejohnson@example.com','password789','1122334455','2024-09-19 08:17:27','volunteer',45),(10,'Mahmud Hasan Sourov','sourov@gmail.com','$2b$10$gbi9Ye7WbOVqpxJyrk7EiuzmIbrrg10cJLhC3QvCnBxwmMGo2Dqji','01523422243','2024-09-20 04:05:58','volunteer',44),(11,'Sourov','sourov12@gmail.com','$2b$10$idfQELSwQzOfBDWK1A2K8uySBOAYIUe5A9ACO.9f2frUgD3bQVIGy','01523422243','2024-09-20 04:58:56','volunteer',31),(12,'Mahmud Hasan','mahmud@gmail.com','$2b$10$w3AlxPES61IRNyWK6khhEOqhb6r8c6j8MEVhuhJDihk97G58LuqXK','01523422243','2024-09-20 04:59:44','admin',12),(13,'Mahabobur Rahman','mahabub@gmail.com','$2b$10$Z60kFUvWZAxPZTYlqMvjpuH/wEhEh76XzMe/Q.cZD7eYUSZiURAHG','01523423443','2024-09-20 05:27:14','admin',36),(14,'Frodo','frodo@gmail.com','$2b$10$kGZ0HPY5csLV7rEIy9Q9wuWn3KD6OUlxr32cm7lOtBx3Yg5tAg5o2','01523123443','2024-09-20 05:27:45','volunteer',15),(15,'Sam','sam@gmail.com','$2b$10$jcgvG1eV8J4FCqfjvPUBQuXL9YmydKH9aUGXEHx7cR2w.RHS97MQ6','01523123443','2024-09-20 05:27:53','volunteer',33),(16,'Gandalf','gandalf@gmail.com','$2b$10$mDzb5AjfkcfMYaZDkVEbL.bB5ImeuJ/jBipDHBh/hHrFFJ8GFRHCG','01523123443','2024-09-20 05:28:03','volunteer',32),(17,'Aragon','aragon@gmail.com','$2b$10$xO7jkmyGwym8X3bvLJjFcuH2iY.FPKfHlGk05qtikXyF1kNSYW2TK','01942313443','2024-09-20 05:28:15','volunteer',47),(18,'Legolas','legolas@gmail.com','$2b$10$KIE1bmuPc72rIE2rBkiiF.JsGR/9pDf169gYb9QbmUidpf2B.48f.','01434213443','2024-09-20 05:28:35','volunteer',13),(19,'Gimli','gimli@gmail.com','$2b$10$6vDVN8xiDRv3YzGSm1AOSeHJ.dWPDremCi6TXW7ZxNMmZkyjc11i2','012312313123','2024-09-22 05:34:30','volunteer',60),(20,'Pippin','pippin@gmail.com','$2b$10$C471XGgdElnxBgSLbPYYGehbCHFZaOiYxFoJ5iWjxxIIRB6.K2zrG','0123123121','2024-09-22 05:39:25','volunteer',35),(21,'Merry','merry@gmail.com','$2b$10$LkEXjQHNoKSOVQtm3.23ZurO71hFaqVTSBn/NuhFHAX4ZvF9duIqS','12312432321','2024-09-22 05:48:59','volunteer',32),(22,'Mahmud Hasan Sourov','sourov1666@gmail.com','$2b$10$2JV.MhyvtD495e981Q01XOYMONz4E3VOgXgeCr1.cqsR4VSbkqT8K','1234324230','2024-10-27 17:12:56','volunteer',26),(23,'Mahabub','mahabub10@gmail.com','$2b$10$F3AN8G2SsEraQd4hIoqjeec8uNTjMJ8li/KI1JfK0yyPZK/AKiZWO','012319312312','2024-10-28 05:17:10','volunteer',29);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +248,7 @@ CREATE TABLE `volunteers` (
   KEY `assigned_crisis_id` (`assigned_crisis_id`),
   CONSTRAINT `volunteers_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `volunteers_ibfk_2` FOREIGN KEY (`assigned_crisis_id`) REFERENCES `crises` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +257,7 @@ CREATE TABLE `volunteers` (
 
 LOCK TABLES `volunteers` WRITE;
 /*!40000 ALTER TABLE `volunteers` DISABLE KEYS */;
-INSERT INTO `volunteers` VALUES (10,1,1,'active'),(11,1,1,'active'),(12,1,2,'active'),(13,1,2,'active'),(14,1,3,'active'),(15,1,3,'active'),(16,1,4,'active'),(17,1,4,'active'),(19,0,NULL,'idle'),(20,0,NULL,'idle'),(21,0,NULL,'idle');
+INSERT INTO `volunteers` VALUES (10,1,1,'active'),(11,1,1,'active'),(12,1,2,'active'),(13,1,2,'active'),(14,1,3,'active'),(15,1,3,'active'),(16,1,4,'active'),(17,1,4,'active'),(19,0,NULL,'idle'),(20,0,1,'active'),(21,0,1,'active'),(22,0,NULL,'idle'),(23,0,2,'active');
 /*!40000 ALTER TABLE `volunteers` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -266,4 +270,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-25 10:49:05
+-- Dump completed on 2025-01-05 12:34:50

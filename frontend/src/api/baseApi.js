@@ -2,7 +2,7 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import { getToken } from "../utils/getToken";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.BASE_API || "http://localhost:8080/api/v1/",
+  baseUrl: import.meta.env.BASE_API || "http://localhost:8000/api/v1/",
   prepareHeaders: (headers) => {
     const token = getToken();
     if (token) {
